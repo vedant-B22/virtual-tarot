@@ -1,0 +1,428 @@
+{
+  "bookings": [
+    {
+      "id": "booking-ed4d4e87",
+      "sessionId": "tarot-d1b49ab5",
+      "clientName": "Aria Stark",
+      "clientEmail": "aria@winterfell.org",
+      "date": "2026-09-28",
+      "timeSlot": "04:00 PM",
+      "timezone": "America/New_York",
+      "focus": "Career & Prosperity",
+      "notes": "Seeking destiny guidance",
+      "status": "confirmed",
+      "createdAt": "2026-09-25T15:40:09.334Z"
+    },
+    {
+      "id": "booking-demo-01",
+      "sessionId": "sanctuary-demo-session",
+      "clientName": "Elena Vance",
+      "clientEmail": "elena.vance@example.com",
+      "date": "2026-09-25",
+      "timeSlot": "03:30 PM",
+      "timezone": "America/New_York (EST)",
+      "focus": "Career & Finances",
+      "notes": "Contemplating a pivot toward creative entrepreneurship. Seeking guidance on timing.",
+      "status": "confirmed",
+      "createdAt": "2026-09-24T15:39:51.752Z"
+    },
+    {
+      "id": "booking-demo-02",
+      "sessionId": "mystic-arcana-live",
+      "clientName": "Marcus Sterling",
+      "clientEmail": "marcus.s@example.com",
+      "date": "2026-09-26",
+      "timeSlot": "05:00 PM",
+      "timezone": "Europe/London (GMT)",
+      "focus": "Love & Relationships",
+      "notes": "Looking for clarity around an old connection resurfacing.",
+      "status": "confirmed",
+      "createdAt": "2026-09-25T03:39:51.752Z"
+    }
+  ],
+  "sessions": {
+    "sanctuary-demo-session": {
+      "sessionId": "sanctuary-demo-session",
+      "bookingId": "booking-demo-01",
+      "clientName": "Elena Vance",
+      "readingFocus": "Career & Finances",
+      "currentStep": 7,
+      "clientReady": true,
+      "adminReady": true,
+      "isShuffling": false,
+      "deck": [
+        {
+          "cardId": "maj_21",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "maj_19",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "maj_16",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_07",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_15",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_7",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_3",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "wands_7",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_00",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_2",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "maj_09",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "wands_10",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_page",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "pentacles_6",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_5",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_queen",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_8",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_page",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_page",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_3",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_4",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_8",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_4",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_ace",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_4",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_king",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_4",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_ace",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_14",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_11",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_5",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_queen",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_queen",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_5",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_knight",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_04",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "wands_page",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_02",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_2",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_king",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "maj_13",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "swords_10",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_3",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_6",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_5",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_ace",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_03",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_9",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_10",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_knight",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_2",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_6",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_06",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_10",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_10",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_king",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_17",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_8",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "swords_3",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_12",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_18",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "wands_2",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_9",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "wands_9",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_6",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_queen",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_20",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "pentacles_knight",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_9",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_king",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "swords_7",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "swords_knight",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "swords_ace",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "cups_7",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_08",
+          "orientation": "reversed"
+        },
+        {
+          "cardId": "cups_8",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_01",
+          "orientation": "upright"
+        },
+        {
+          "cardId": "maj_05",
+          "orientation": "reversed"
+        }
+      ],
+      "selectedCards": [
+        {
+          "cardId": "swords_10",
+          "category": "Life",
+          "orientation": "upright",
+          "revealed": true,
+          "pickedIndex": 41,
+          "pickedAt": "2026-09-25T15:42:00.199Z"
+        },
+        {
+          "cardId": "maj_09",
+          "category": "Love",
+          "orientation": "reversed",
+          "revealed": true,
+          "pickedIndex": 10,
+          "pickedAt": "2026-09-25T15:42:03.715Z"
+        },
+        {
+          "cardId": "wands_4",
+          "category": "Career",
+          "orientation": "upright",
+          "revealed": true,
+          "pickedIndex": 20,
+          "pickedAt": "2026-09-25T15:42:05.916Z"
+        }
+      ],
+      "adminNotes": {
+        "life": "",
+        "love": "",
+        "career": "",
+        "summary": ""
+      },
+      "participants": {
+        "admin": {
+          "socketId": "ni1InEV8Y3UtYZY3AAAA",
+          "name": "Reader (Admin)",
+          "online": true
+        },
+        "client": {
+          "socketId": "8Jwa_rmY0njBBGjYAAAB",
+          "name": "Seeker",
+          "online": true
+        }
+      },
+      "webrtcActive": false,
+      "updatedAt": "2026-09-25T15:46:48.650Z"
+    }
+  },
+  "emailLogs": [
+    {
+      "id": "email-1790350809335",
+      "recipient": "aria@winterfell.org",
+      "clientName": "Aria Stark",
+      "subject": "Your Live Tarot Reading is Confirmed 🔮 — 2026-09-28 at 04:00 PM",
+      "sessionLink": "http://localhost:5173/session/tarot-d1b49ab5",
+      "date": "2026-09-28",
+      "timeSlot": "04:00 PM",
+      "html": "\n    <!DOCTYPE html>\n    <html>\n    <head>\n      <meta charset=\"utf-8\">\n      <style>\n        body { font-family: 'Georgia', serif; background-color: #0b0914; color: #f1ecff; padding: 24px; margin: 0; }\n        .card { max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #181329 0%, #100c1e 100%); border: 1px solid #7c3aed; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }\n        .header { text-align: center; border-bottom: 1px solid #3b2d5e; padding-bottom: 20px; }\n        .title { color: #facc15; font-size: 26px; letter-spacing: 2px; margin: 0; }\n        .subtitle { color: #a78bfa; font-style: italic; font-size: 14px; margin-top: 6px; }\n        .details { margin: 24px 0; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 18px; border-left: 3px solid #facc15; }\n        .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }\n        .label { color: #9ca3af; }\n        .val { color: #fff; font-weight: bold; }\n        .btn-container { text-align: center; margin: 32px 0 20px; }\n        .btn { background: linear-gradient(90deg, #d97706, #9333ea); color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: bold; letter-spacing: 1px; display: inline-block; box-shadow: 0 0 20px rgba(217, 119, 6, 0.4); }\n        .ritual-steps { background: rgba(124, 58, 237, 0.1); border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 13px; line-height: 1.6; color: #ddd6fe; }\n        .footer { font-size: 12px; text-align: center; color: #6b7280; margin-top: 24px; }\n      </style>\n    </head>\n    <body>\n      <div class=\"card\">\n        <div class=\"header\">\n          <h1 class=\"title\">LIVE TAROT SANCTUARY</h1>\n          <p class=\"subtitle\">Your Sacred Connection Has Been Formed</p>\n        </div>\n\n        <p>Greetings <strong>Aria Stark</strong>,</p>\n        <p>Your upcoming virtual tarot reading session has been scheduled. Prepare your heart and mind to receive guidance from the cards.</p>\n\n        <div class=\"details\">\n          <div class=\"row\"><span class=\"label\">Date:</span> <span class=\"val\">2026-09-28</span></div>\n          <div class=\"row\"><span class=\"label\">Time:</span> <span class=\"val\">04:00 PM</span></div>\n          <div class=\"row\"><span class=\"label\">Timezone:</span> <span class=\"val\">America/New_York</span></div>\n          <div class=\"row\"><span class=\"label\">Focus of Inquiry:</span> <span class=\"val\">Career & Prosperity</span></div>\n          <div class=\"row\"><span class=\"label\">Your Intentions:</span> <span class=\"val\">Seeking destiny guidance</span></div>\n        </div>\n\n        <div class=\"ritual-steps\">\n          <strong>🌿 How to Prepare for Your Session:</strong><br>\n          • Find a quiet, peaceful space with minimal distractions.<br>\n          • Take 3 deep breaths and reflect on what answers your soul seeks.<br>\n          • You will join a real-time room to shuffle and choose 3 cards: Life, Love, and Career.\n        </div>\n\n        <div class=\"btn-container\">\n          <a href=\"http://localhost:5173/session/tarot-d1b49ab5\" class=\"btn\">ENTER LIVE SESSION ROOM</a>\n        </div>\n        <p style=\"text-align: center; font-size: 13px; color: #9ca3af;\">\n          Direct Room Link: <a href=\"http://localhost:5173/session/tarot-d1b49ab5\" style=\"color: #a78bfa;\">http://localhost:5173/session/tarot-d1b49ab5</a>\n        </p>\n\n        <div class=\"footer\">\n          Live Tarot Virtual Reading Sanctuary • All readings are confidential & live\n        </div>\n      </div>\n    </body>\n    </html>\n  ",
+      "timestamp": "2026-09-25T15:40:09.335Z"
+    }
+  ]
+}
