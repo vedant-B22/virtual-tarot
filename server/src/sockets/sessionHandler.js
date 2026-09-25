@@ -143,7 +143,7 @@ function setupSocketHandlers(io) {
         db.saveSession(currentSessionId, session);
         io.to(currentSessionId).emit('shuffle_ended', { deck: session.deck });
         io.to(currentSessionId).emit('session_state', session);
-      }, 4500);
+      }, 6500);
     });
 
     // Pick Card from Spread (Step 4)
