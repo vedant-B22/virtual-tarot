@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import type { SessionState, CardCategory, TarotCardData } from '../types/tarot';
 import { TarotCard } from './TarotCard';
+import { DeckShuffleAnimation } from './DeckShuffleAnimation';
 import { VideoRoom } from './VideoRoom';
 import { audioEngine } from '../utils/audio';
 import { BACKEND_URL } from '../utils/apiConfig';
@@ -23,8 +24,7 @@ import {
   Flame,
   Heart,
   Briefcase,
-  Compass,
-  Layers
+  Compass
 } from 'lucide-react';
 
 interface LiveSessionProps {
@@ -449,76 +449,37 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto py-4"
+            className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto py-4"
           >
             <div className="mb-2">
-              <span className="text-xs uppercase tracking-widest text-amber-400 font-medium">Step 2: Sacred Shuffle</span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-amber-200 mt-1">
-                Infuse the 78 Cards with Your Energy
+              <span className="text-xs uppercase tracking-widest text-[#d4af37] font-cinzel font-bold">
+                Step 2: Sacred Split & Riffle Shuffle
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-gothic-title font-bold text-[#fef08a] mt-1 drop-shadow">
+                Infuse the 78 Arcana with Your Will
               </h2>
-              <p className="text-xs sm:text-sm text-purple-300/80 mt-1 max-w-lg mx-auto">
-                Click to shuffle the deck. Watch the cards riffle and realign in real-time between reader and seeker.
+              <p className="text-xs sm:text-sm text-[#e2d5b8]/80 mt-1 max-w-lg mx-auto font-serif">
+                Watch the sacred deck divide, riffle, and interlock in real-time across both screens.
               </p>
             </div>
 
-            {/* Shuffling Deck Physics/Animation Container */}
-            <div className="relative w-72 h-80 my-8 flex items-center justify-center">
-              {/* Stacked Cards Simulation */}
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={
-                    session?.isShuffling
-                      ? {
-                          x: i % 2 === 0 ? [-30, 40, -20, 0] : [30, -40, 20, 0],
-                          y: [0, -15, 10, 0],
-                          rotate: i % 2 === 0 ? [-12, 16, -6, 0] : [12, -16, 6, 0]
-                        }
-                      : {
-                          x: (i - 3) * 2,
-                          y: (i - 3) * 2,
-                          rotate: (i - 3) * 1.5
-                        }
-                  }
-                  transition={{ duration: 1.6, ease: 'easeInOut' }}
-                  className="absolute"
-                  style={{ zIndex: i }}
-                >
-                  <TarotCard isRevealed={false} size="md" />
-                </motion.div>
-              ))}
+            {/* 3D Physics Split & Riffle Deck Shuffle Animation */}
+            <DeckShuffleAnimation
+              isShuffling={Boolean(session?.isShuffling)}
+              onShuffleTrigger={handleTriggerShuffle}
+              canTrigger={true}
+            />
 
-              {session?.isShuffling && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                  <div className="px-4 py-2 rounded-full bg-black/80 border border-amber-400/50 text-amber-300 text-xs font-semibold backdrop-blur-md shadow-2xl animate-pulse">
-                    ✨ Resonating & Shuffling...
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Shuffle & Spread Controls */}
-            <div className="flex flex-col sm:flex-row items-center gap-3">
-              <button
-                onClick={handleTriggerShuffle}
-                disabled={session?.isShuffling}
-                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-purple-600 to-amber-600 hover:brightness-110 text-white font-semibold text-sm tracking-wide shadow-xl shadow-amber-500/20 disabled:opacity-50 transition flex items-center gap-2"
-              >
-                <Layers size={18} />
-                <span>{session?.isShuffling ? 'Shuffling...' : 'Shuffle the Deck'}</span>
-              </button>
-
+            {/* Proceed to Spread */}
+            <div className="mt-4">
               <button
                 onClick={() => handleAdvanceStep(3)}
-                className="px-6 py-3.5 rounded-2xl bg-purple-900/50 hover:bg-purple-800 text-purple-200 border border-purple-500/40 font-semibold text-sm transition flex items-center gap-2"
+                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#9a3412] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-xs uppercase tracking-widest border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.3)] transition flex items-center gap-2 hover:scale-105"
               >
-                <span>Spread the Cards Across Altar</span>
+                <span>Spread the 78 Cards Across Altar</span>
                 <ArrowRight size={16} />
               </button>
             </div>
-            <p className="text-[11px] text-purple-400/70 mt-3">
-              Both reader and seeker can trigger the shuffle; state updates synchronously.
-            </p>
           </motion.div>
         )}
 

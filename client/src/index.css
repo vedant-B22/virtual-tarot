@@ -2,21 +2,34 @@
 
 @layer base {
   :root {
-    --card-width: 130px;
-    --card-height: 220px;
+    --card-width: 140px;
+    --card-height: 240px;
   }
   
   body {
-    background-color: #08070d;
-    color: #e2e0ea;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #06040a;
+    background-image: 
+      radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(88, 28, 135, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at 90% 80%, rgba(180, 83, 9, 0.09) 0%, transparent 50%);
+    color: #eedec5;
+    font-family: 'EB Garamond', Georgia, serif;
     overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-cinzel {
+    font-family: 'Cinzel', Georgia, serif;
+    letter-spacing: 0.05em;
+  }
+
+  .font-gothic-title {
+    font-family: 'Cinzel Decorative', 'MedievalSharp', serif;
   }
 }
 
 /* 3D Perspective for Card Flips */
 .perspective-1000 {
-  perspective: 1000px;
+  perspective: 1200px;
 }
 
 .transform-style-3d {
@@ -32,67 +45,95 @@
   transform: rotateY(180deg);
 }
 
-/* Mystical Glow Effects */
-.mystic-glow {
-  box-shadow: 0 0 25px rgba(168, 85, 247, 0.35), 0 0 50px rgba(217, 119, 6, 0.2);
+/* Gothic Gold & Mystical Glow Effects */
+.gothic-glow {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), 0 0 60px rgba(126, 34, 206, 0.2);
 }
 
 .gold-glow {
-  box-shadow: 0 0 20px rgba(234, 179, 8, 0.4), inset 0 0 15px rgba(234, 179, 8, 0.2);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.45), inset 0 0 15px rgba(212, 175, 55, 0.15);
 }
 
 .life-glow {
-  box-shadow: 0 0 25px rgba(34, 197, 94, 0.45), 0 0 50px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 25px rgba(52, 211, 153, 0.4), 0 0 50px rgba(16, 185, 129, 0.15);
 }
 
 .love-glow {
-  box-shadow: 0 0 25px rgba(236, 72, 153, 0.45), 0 0 50px rgba(219, 39, 119, 0.2);
+  box-shadow: 0 0 25px rgba(244, 114, 182, 0.4), 0 0 50px rgba(219, 39, 119, 0.15);
 }
 
 .career-glow {
-  box-shadow: 0 0 25px rgba(234, 179, 8, 0.45), 0 0 50px rgba(202, 138, 4, 0.2);
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.4), 0 0 50px rgba(217, 119, 6, 0.15);
 }
 
-/* Custom Scrollbar for smooth mystic look */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f0c1b;
+  background: #090611;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2f2549;
+  background: #3b2818;
+  border: 1px solid #78531d;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4c3b77;
+  background: #5d3f18;
 }
 
-@keyframes pulse-slow {
+/* Candle Flame & Ember Keyframes */
+@keyframes candle-flicker {
   0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
+    opacity: 0.9;
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.8));
+  }
+  25% {
+    opacity: 0.75;
+    transform: scale(0.97) translateY(1px);
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.6));
   }
   50% {
+    opacity: 1;
+    transform: scale(1.04) translateY(-1px);
+    filter: drop-shadow(0 0 22px rgba(251, 191, 36, 0.9));
+  }
+  75% {
+    opacity: 0.85;
+    transform: scale(0.98) translateY(0.5px);
+  }
+}
+
+.animate-candle {
+  animation: candle-flicker 3s ease-in-out infinite;
+}
+
+@keyframes float-ember {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.6;
+  }
+  80% {
     opacity: 0.8;
-    transform: scale(1.05);
+  }
+  100% {
+    transform: translateY(-80px) rotate(360deg);
+    opacity: 0;
   }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 4s ease-in-out infinite;
+.animate-ember {
+  animation: float-ember 5s ease-in infinite;
 }
 
-@keyframes float-subtle {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.animate-float {
-  animation: float-subtle 3s ease-in-out infinite;
+/* Parchment texture effect */
+.parchment-panel {
+  background: linear-gradient(135deg, rgba(26, 17, 40, 0.95) 0%, rgba(13, 9, 23, 0.98) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(212, 175, 55, 0.2);
 }

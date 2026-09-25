@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BookingCalendar } from './components/BookingCalendar';
 import { AdminDashboard } from './components/AdminDashboard';
 import { LiveSession } from './components/LiveSession';
-import { Sparkles, Calendar, Shield, Moon } from 'lucide-react';
+import { Calendar, Shield, Flame } from 'lucide-react';
 
 export function App() {
   const [activeView, setActiveView] = useState<'booking' | 'admin' | 'session'>('booking');
@@ -67,73 +67,73 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#08070e] text-[#f1ecff] flex flex-col font-sans selection:bg-purple-500/30 selection:text-amber-200">
-      {/* Mystical Background Lighting */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-purple-900/15 rounded-full blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[20%] w-[500px] h-[500px] bg-amber-600/10 rounded-full blur-[140px]" />
+    <div className="min-h-screen bg-[#07050d] text-[#eedec5] flex flex-col font-serif selection:bg-amber-700/40 selection:text-[#fef08a] relative overflow-x-hidden">
+      {/* Hogwarts / Gothic Floating Embers & Candlelight Background */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Deep Gothic Haze */}
+        <div className="absolute top-[-15%] left-[20%] w-[650px] h-[650px] bg-purple-950/20 rounded-full blur-[160px]" />
+        <div className="absolute bottom-[-10%] right-[15%] w-[650px] h-[650px] bg-amber-900/15 rounded-full blur-[160px]" />
+        <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[500px] h-[500px] bg-[#d4af37]/5 rounded-full blur-[140px]" />
+
+        {/* Ambient Floating Embers */}
+        <div className="absolute top-[20%] left-[10%] w-1.5 h-1.5 rounded-full bg-amber-400/50 blur-[0.5px] animate-ember" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-[65%] left-[85%] w-2 h-2 rounded-full bg-orange-400/40 blur-[0.5px] animate-ember" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[80%] left-[25%] w-1 h-1 rounded-full bg-amber-300/60 blur-[0.5px] animate-ember" style={{ animationDelay: '3.5s' }} />
+        <div className="absolute top-[35%] right-[20%] w-1.5 h-1.5 rounded-full bg-amber-500/50 blur-[0.5px] animate-ember" style={{ animationDelay: '1.2s' }} />
       </div>
 
-      {/* Main Top Header */}
-      <header className="relative z-20 border-b border-purple-500/20 bg-[#0e091b]/80 backdrop-blur-md px-4 sm:px-8 py-3.5">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          {/* Logo */}
+      {/* Main Gothic Top Header */}
+      <header className="relative z-20 border-b border-[#d4af37]/30 bg-[#0d0818]/90 backdrop-blur-md px-4 sm:px-8 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Logo & Brand Identity */}
           <div
             onClick={() => {
               setActiveView('booking');
               window.history.pushState({}, '', '/');
             }}
-            className="flex items-center gap-2.5 cursor-pointer group"
+            className="flex items-center gap-3.5 cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-purple-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <Sparkles size={20} className="text-amber-200" />
+            {/* Wax Seal / Mystic Crest */}
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#9a3412] via-[#581c87] to-[#1c1917] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300">
+              <span className="text-xl text-[#f3e5ab] drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]">🜂</span>
             </div>
             <div>
-              <div className="font-serif font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-purple-100 to-amber-200">
+              <div className="font-gothic-title font-bold text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#e2d5b8] to-[#d4af37] drop-shadow">
                 LIVE TAROT
               </div>
-              <div className="text-[10px] tracking-widest text-purple-400 uppercase font-medium">
-                Virtual Sanctuary & Readings
+              <div className="text-[11px] tracking-widest text-[#d4af37]/80 uppercase font-cinzel font-medium">
+                The Mystic Arcana Sanctuary
               </div>
             </div>
           </div>
 
-          {/* Navigation Pill */}
-          <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-purple-950/40 border border-purple-500/20 text-xs">
+          {/* Navigation Controls */}
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/60 border border-[#d4af37]/35 shadow-inner">
             <button
               onClick={() => {
                 setActiveView('booking');
                 window.history.pushState({}, '', '/');
               }}
-              className={`px-4 py-2 rounded-xl font-medium transition flex items-center gap-1.5 ${
+              className={`px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeView === 'booking'
-                  ? 'bg-amber-500 text-purple-950 font-bold shadow-md shadow-amber-500/20'
-                  : 'text-purple-300 hover:text-white hover:bg-purple-900/40'
+                  ? 'bg-gradient-to-r from-[#b45309] to-[#d97706] text-[#0f0a1c] shadow-[0_0_15px_rgba(217,119,6,0.5)]'
+                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-purple-950/40'
               }`}
             >
               <Calendar size={14} />
-              <span>Book Reading</span>
+              <span>Book Sacred Reading</span>
             </button>
 
             <button
               onClick={() => setActiveView('admin')}
-              className={`px-4 py-2 rounded-xl font-medium transition flex items-center gap-1.5 ${
+              className={`px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeView === 'admin'
-                  ? 'bg-amber-500 text-purple-950 font-bold shadow-md shadow-amber-500/20'
-                  : 'text-purple-300 hover:text-white hover:bg-purple-900/40'
+                  ? 'bg-gradient-to-r from-[#b45309] to-[#d97706] text-[#0f0a1c] shadow-[0_0_15px_rgba(217,119,6,0.5)]'
+                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-purple-950/40'
               }`}
             >
               <Shield size={14} />
-              <span>Reader Dashboard</span>
-            </button>
-
-            <button
-              onClick={() => navigateToSession('sanctuary-demo-session', 'Elena Vance', 'client')}
-              className="px-3.5 py-2 rounded-xl bg-purple-900/40 hover:bg-purple-800/60 text-purple-200 border border-purple-500/30 transition flex items-center gap-1.5"
-              title="Launch instant live synced test room"
-            >
-              <Sparkles size={13} className="text-amber-400" />
-              <span>Instant Test Room</span>
+              <span>Reader Sanctuary</span>
             </button>
           </div>
         </div>
@@ -154,15 +154,35 @@ export function App() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="relative z-10 border-t border-purple-500/20 bg-[#0a0715] py-6 px-4 text-center text-xs text-purple-400/80">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <Moon size={14} className="text-amber-400" />
-            <span>Live Tarot Sanctuary — Real-Time Synced Virtual Arcana Readings</span>
+      {/* Gothic Mystical Footer with Founders Brand */}
+      <footer className="relative z-10 border-t border-[#d4af37]/30 bg-[#090514] py-8 px-4 text-[#e2d5b8]/80 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          {/* Brand & Founders Identification */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-center md:justify-start gap-2 text-[#d4af37] font-cinzel font-bold text-base tracking-wide">
+              <Flame size={16} className="text-amber-500 animate-pulse" />
+              <span>The Mystic Arcana Sanctuary</span>
+            </div>
+            <div className="text-xs text-[#c4b5fd] font-serif leading-relaxed">
+              Curated under the sacred auspices of{' '}
+              <strong className="text-[#fef08a] font-cinzel">Founder Vedant Baviskar</strong> &{' '}
+              <strong className="text-[#fef08a] font-cinzel">Co-Founder Anvii Panchal</strong>.
+            </div>
+            <p className="text-[11px] text-[#9ca3af] italic">
+              Dedicated to the Hermetic mysteries, authentic 78-card Rider-Waite divination & live soul guidance.
+            </p>
           </div>
-          <div>
-            Built with React, WebSockets (Socket.io), WebRTC, Framer Motion & Tailwind CSS
+
+          {/* Sacred Seal / Encrypted Security Notice */}
+          <div className="flex flex-col items-center md:items-end text-xs text-[#d4af37]/80 font-cinzel tracking-wider space-y-1">
+            <div className="flex items-center gap-1.5 text-[#fde047]">
+              <span>✦</span>
+              <span>All Readings Confidential, Encrypted & Live</span>
+              <span>✦</span>
+            </div>
+            <div className="text-[10px] text-[#9ca3af] tracking-widest uppercase">
+              Omnia Vincit Veritas • Est. MMXXVI
+            </div>
           </div>
         </div>
       </footer>

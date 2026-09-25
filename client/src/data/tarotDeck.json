@@ -16,7 +16,8 @@
     "upright": "A fresh journey begins. Trust the unknown, take an open-hearted risk, and embrace the boundless potential of life without fear.",
     "reversed": "Recklessness, fear of taking a necessary leap, naive decisions, or hesitating at the threshold of change.",
     "description": "The youth standing at the cliff's edge, dog at his heels, ready to step into creation with curiosity and untamed wonder.",
-    "symbolColor": "#f59e0b"
+    "symbolColor": "#f59e0b",
+    "image": "/cards/00-TheFool.png"
   },
   {
     "id": "maj_01",
@@ -35,7 +36,8 @@
     "upright": "You hold all tools required: wand, cup, sword, and coin. As above, so below. Direct your willpower to manifest your deepest vision.",
     "reversed": "Illusion, wasted talent, manipulation, trickery, or self-doubt blocking your authentic power.",
     "description": "One hand raised to the heavens, one pointing to the earth, channeling divine energy into physical form.",
-    "symbolColor": "#ef4444"
+    "symbolColor": "#ef4444",
+    "image": "/cards/01-TheMagician.png"
   },
   {
     "id": "maj_02",
@@ -54,7 +56,8 @@
     "upright": "Look beyond the veil. Your intuition and dreams carry ancient wisdom. Still the noise and listen to the silent whisper within.",
     "reversed": "Ignoring your gut instincts, hidden agendas, superficial focus, or disconnection from inner knowing.",
     "description": "Seated between the pillars of darkness and light, veiled before the tapestry of pomegranates with the crescent moon at her feet.",
-    "symbolColor": "#3b82f6"
+    "symbolColor": "#3b82f6",
+    "image": "/cards/02-TheHighPriestess.png"
   },
   {
     "id": "maj_03",
@@ -73,7 +76,8 @@
     "upright": "A season of abundant blossoming, creative birth, and sensory delight. Nurture what you are growing with compassion and warmth.",
     "reversed": "Creative blockage, overbearing care, feeling drained, neglecting self-love, or disharmony in relationships.",
     "description": "Crowned with twelve stars upon a plush throne in a fertile wheat field surrounded by babbling streams.",
-    "symbolColor": "#10b981"
+    "symbolColor": "#10b981",
+    "image": "/cards/03-TheEmpress.png"
   },
   {
     "id": "maj_04",
@@ -92,7 +96,8 @@
     "upright": "Erect solid foundations. Establish boundaries, exercise focused discipline, and lead your domain with clarity and calm strength.",
     "reversed": "Rigidity, tyrant energy, loss of control, stubborn resistance to evolution, or chaotic lack of structure.",
     "description": "Seated upon a stone throne carved with rams' heads, holding the golden ankh and orb over his mountainous empire.",
-    "symbolColor": "#dc2626"
+    "symbolColor": "#dc2626",
+    "image": "/cards/04-TheEmperor.png"
   },
   {
     "id": "maj_05",
@@ -111,7 +116,8 @@
     "upright": "Seek guidance from higher truth, trusted lineage, or sacred study. Align your daily deeds with your deeper spiritual principles.",
     "reversed": "Blind conformity, dogmatism, breaking sacred taboos, establishing your own unconventional path.",
     "description": "The spiritual elder seated between two sacred keys, imparting timeless truths to eager seekers.",
-    "symbolColor": "#8b5cf6"
+    "symbolColor": "#8b5cf6",
+    "image": "/cards/05-TheHierophant.png"
   },
   {
     "id": "maj_06",
@@ -130,7 +136,8 @@
     "upright": "A meeting of souls, profound vulnerability, and mutual resonance. Beyond romance, this signifies a crucial values-based choice.",
     "reversed": "Misalignment of core values, relational conflict, codependency, or inner discord pulling in two directions.",
     "description": "Two figures beneath the blessing angel Raphael and the flaming tree of life, uniting spirit and desire.",
-    "symbolColor": "#ec4899"
+    "symbolColor": "#ec4899",
+    "image": "/cards/06-TheLovers.png"
   },
   {
     "id": "maj_07",
@@ -149,7 +156,8 @@
     "upright": "Harness opposing forces with unwavering focus. Tame the wild black and white steeds of your thoughts and charge forward to victory.",
     "reversed": "Loss of direction, aggression, burnout, running roughshod over others, or feeling powerless against currents.",
     "description": "A crowned warrior driving forward in a starry canopy chariot pulled by two sphinxes in perfect balance.",
-    "symbolColor": "#0284c7"
+    "symbolColor": "#0284c7",
+    "image": "/cards/07-TheChariot.png"
   },
   {
     "id": "maj_08",
@@ -168,7 +176,8 @@
     "upright": "True strength is quiet and tender. Calm the roaring beast within through patience, soft words, and unshakable inner faith.",
     "reversed": "Self-doubt, raw impulsiveness, feelings of weakness, emotional volatility, or burning out your reserves.",
     "description": "A serene woman adorned with roses gently closing the jaw of a lion with soft loving hands.",
-    "symbolColor": "#d97706"
+    "symbolColor": "#d97706",
+    "image": "/cards/08-Strength.png"
   },
   {
     "id": "maj_09",
@@ -187,7 +196,8 @@
     "upright": "Withdraw from the crowd. Hold up your internal lantern to illuminate the sacred path. Quiet reflection brings profound revelation.",
     "reversed": "Excessive isolation, loneliness, hiding from truth, anti-social withdrawal, or ignoring helpful guides.",
     "description": "An ancient sage in a grey cloak atop a snowy mountain, holding a beacon lantern housing a radiant six-pointed star.",
-    "symbolColor": "#64748b"
+    "symbolColor": "#64748b",
+    "image": "/cards/09-TheHermit.png"
   },
   {
     "id": "maj_10",
@@ -206,7 +216,8 @@
     "upright": "The cosmic wheel turns. A shift in luck, synchronicity, and divine timing are active. Embrace the natural ebb and flow of life.",
     "reversed": "Bad luck, resisting necessary cycles, feeling trapped by fate, a reminder that downs are as temporary as ups.",
     "description": "The great golden wheel etched with Hebrew and alchemical glyphs spinning amidst the four living creatures in the clouds.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/10-WheelOfFortune.png"
   },
   {
     "id": "maj_11",
@@ -225,7 +236,8 @@
     "upright": "Truth will be revealed. Act with unflinching honesty and balance your scales. Clear karmic equilibrium will be restored.",
     "reversed": "Dishonesty, unfair treatment, dodging accountability, prejudice, or harsh self-judgment.",
     "description": "Robed in crimson between upright pillars, holding the upright two-edged sword of truth and balanced golden scales.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/11-Justice.png"
   },
   {
     "id": "maj_12",
@@ -244,7 +256,8 @@
     "upright": "Voluntary suspension. Let go of fighting the current. In pausing and viewing reality upside down, newfound wisdom is found.",
     "reversed": "Futile struggle, stalling out of fear, martyr complex, spiritual stagnation, resisting surrender.",
     "description": "Suspended by one foot from the Living Tree, radiating a halo of serene golden enlightenment.",
-    "symbolColor": "#06b6d4"
+    "symbolColor": "#06b6d4",
+    "image": "/cards/12-TheHangedMan.png"
   },
   {
     "id": "maj_13",
@@ -263,7 +276,8 @@
     "upright": "A profound ending that clears space for majestic rebirth. Shed what has outlived its purpose with reverence and anticipation.",
     "reversed": "Clinging to the past, fear of change, repeating dead patterns, prolonged painful endings.",
     "description": "The mystical skeletal rider holding the banner of the mystic rose while the sun rises between two distant towers.",
-    "symbolColor": "#475569"
+    "symbolColor": "#475569",
+    "image": "/cards/13-Death.png"
   },
   {
     "id": "maj_14",
@@ -282,7 +296,8 @@
     "upright": "Harmonizing extremes. Blend opposite energies into a higher elixir of life. Move with measured grace, patience, and moderation.",
     "reversed": "Extremes, imbalance, impatience, chaotic mixing of energies, burning bridges through hurried reactions.",
     "description": "A winged angel with one foot in water and one on land, pouring the elixir of life between two golden cups without spilling a drop.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/14-Temperance.png"
   },
   {
     "id": "maj_15",
@@ -301,7 +316,8 @@
     "upright": "Notice where you have given your power away to fear, compulsive habits, or material addictions. The chains around your neck are loose.",
     "reversed": "Breaking free from toxicity, releasing old dependencies, embracing freedom, confronting shadow illusions.",
     "description": "The horned baphomet perched atop a stone altar with two loosely chained figures who can slip free at any moment.",
-    "symbolColor": "#b91c1c"
+    "symbolColor": "#b91c1c",
+    "image": "/cards/15-TheDevil.png"
   },
   {
     "id": "maj_16",
@@ -319,7 +335,8 @@
     "upright": "Lightning strikes false illusions. Though disruptive, this sudden clearing collapses brittle structures to make way for authentic truth.",
     "reversed": "Disaster avoided, delaying inevitable collapse, fear of facing fundamental shifts, internal crisis.",
     "description": "A high fortress blasted by lightning from the heavens, crown dislodged, flames bursting as false pride crumbles.",
-    "symbolColor": "#ea580c"
+    "symbolColor": "#ea580c",
+    "image": "/cards/16-TheTower.png"
   },
   {
     "id": "maj_17",
@@ -338,7 +355,8 @@
     "upright": "After the storm, the sky clears. Healing light pours upon your heart. Have complete faith in the radiant future calling you forward.",
     "reversed": "Despair, discouragement, feeling disconnected from grace, cynicism, neglecting emotional replenishment.",
     "description": "A naked maiden beneath an eight-pointed radiant star pouring water onto land and pool, nourishing the earth.",
-    "symbolColor": "#0ea5e9"
+    "symbolColor": "#0ea5e9",
+    "image": "/cards/17-TheStar.png"
   },
   {
     "id": "maj_18",
@@ -357,7 +375,8 @@
     "upright": "Not all is as it seems in the moonlight. Trust your instincts through the fog. Pay close attention to vivid dreams and emotional undercurrents.",
     "reversed": "Lifting of confusion, seeing through deception, release of irrational dread, waking from an illusion.",
     "description": "A full moon shedding dewdrops between two towers while a dog and wolf howl, and a crayfish emerges from the water.",
-    "symbolColor": "#6366f1"
+    "symbolColor": "#6366f1",
+    "image": "/cards/18-TheMoon.png"
   },
   {
     "id": "maj_19",
@@ -376,7 +395,8 @@
     "upright": "Radiant joy, clarity, and boundless optimism! Your vitality shines like midday sun. Success, warmth, and pure celebration surround you.",
     "reversed": "Temporary clouds over your joy, burnout, struggling to see the bright side, delayed gratification.",
     "description": "A golden smiling sun beaming down upon a joyous child riding a gentle white steed amidst vibrant sunflowers.",
-    "symbolColor": "#facc15"
+    "symbolColor": "#facc15",
+    "image": "/cards/19-TheSun.png"
   },
   {
     "id": "maj_20",
@@ -395,7 +415,8 @@
     "upright": "The horn sounds your sacred wake-up call. Rise out of past regrets, forgive what was, and step boldly into your higher purpose.",
     "reversed": "Self-criticism, ignoring the call to grow, lingering guilt, hesitation to step into your power.",
     "description": "Archangel Gabriel sounding the gilded horn from the heavens as souls rise from gray sarcophagi with arms wide open.",
-    "symbolColor": "#9333ea"
+    "symbolColor": "#9333ea",
+    "image": "/cards/20-Judgement.png"
   },
   {
     "id": "maj_21",
@@ -414,7 +435,8 @@
     "upright": "The cycle is gloriously fulfilled. You have journeyed far and integrated all lessons. Celebrate your wholeness and step into new mastery.",
     "reversed": "Unfinished business, missing closure, rushing ahead before savoring completion, feeling close yet delayed.",
     "description": "The dancing maiden encircled by the laurel wreath of victory, flanked by the four guardians of the cosmos.",
-    "symbolColor": "#14b8a6"
+    "symbolColor": "#14b8a6",
+    "image": "/cards/21-TheWorld.png"
   },
   {
     "id": "wands_ace",
@@ -433,7 +455,8 @@
     "upright": "A raw gift of Energy, Passion, Ambition, Creativity energy emerges. A powerful seed is planted with infinite upside.",
     "reversed": "Creative blockage, hesitating to plant the seed, or misdirected potential.",
     "description": "Ace of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Ace.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands01.png"
   },
   {
     "id": "wands_2",
@@ -452,7 +475,8 @@
     "upright": "Finding equilibrium between choices or creating an intentional blueprint for expansion.",
     "reversed": "Struggling to balance dual demands or indecisiveness stalling progress.",
     "description": "Two of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Two.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands02.png"
   },
   {
     "id": "wands_3",
@@ -471,7 +495,8 @@
     "upright": "Early results show promise. Teamwork, creative synergy, and expanding horizons take flight.",
     "reversed": "Cooperation breaking down or plans requiring reassessment.",
     "description": "Three of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Three.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands03.png"
   },
   {
     "id": "wands_4",
@@ -490,7 +515,8 @@
     "upright": "A solid container, safe sanctuary, and grounded stability to build upon.",
     "reversed": "Security becoming a gilded cage or feeling stagnant.",
     "description": "Four of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Four.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands04.png"
   },
   {
     "id": "wands_5",
@@ -509,7 +535,8 @@
     "upright": "A constructive friction or test revealing what is genuine and what must evolve.",
     "reversed": "The worst of the conflict has passed; healing and reconciliation begin.",
     "description": "Five of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Five.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands05.png"
   },
   {
     "id": "wands_6",
@@ -528,7 +555,8 @@
     "upright": "Victory, kind gestures, restoring flow, and sweet reciprocal blessings.",
     "reversed": "Unbalanced exchanges or lingering too long in nostalgic reverie.",
     "description": "Six of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Six.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands06.png"
   },
   {
     "id": "wands_7",
@@ -547,7 +575,8 @@
     "upright": "Pause to assess your harvest or defend your sacred position with strategic insight.",
     "reversed": "Second-guessing your efforts right before breakthrough.",
     "description": "Seven of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Seven.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands07.png"
   },
   {
     "id": "wands_8",
@@ -566,7 +595,8 @@
     "upright": "Focused craftsmanship, rapid movement, and dedicated cultivation of excellence.",
     "reversed": "Overworking without joy, or rushed execution causing mistakes.",
     "description": "Eight of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Eight.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands08.png"
   },
   {
     "id": "wands_9",
@@ -585,7 +615,8 @@
     "upright": "You stand resilient, sovereign, and poised for fulfillment. Guard what matters most.",
     "reversed": "Exhaustion at the finish line; remember to rest and accept support.",
     "description": "Nine of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Nine.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands09.png"
   },
   {
     "id": "wands_10",
@@ -604,7 +635,8 @@
     "upright": "Full fruition of this suit's journey. A legacy established and cycle fulfilled.",
     "reversed": "Carrying unnecessary baggage or struggling under accumulated burdens.",
     "description": "Ten of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Ten.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands10.png"
   },
   {
     "id": "wands_page",
@@ -623,7 +655,8 @@
     "upright": "The young explorer bringing messages of curiosity, wonder, and fresh inspiration.",
     "reversed": "Scatterbrained curiosity without follow-through, or petty distractions.",
     "description": "Page of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Page.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands11.png"
   },
   {
     "id": "wands_knight",
@@ -642,7 +675,8 @@
     "upright": "Galloping forward with purpose and devotion to their chosen quest.",
     "reversed": "Impulsive rush causing collateral damage, or lack of stamina.",
     "description": "Knight of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Knight.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands12.png"
   },
   {
     "id": "wands_queen",
@@ -661,7 +695,8 @@
     "upright": "A deeply embodied master holding sovereign authority with gentle grace.",
     "reversed": "Allowing insecurity to cloud inner warmth and self-worth.",
     "description": "Queen of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the Queen.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands13.png"
   },
   {
     "id": "wands_king",
@@ -680,7 +715,8 @@
     "upright": "Mature mastery, visionary governance, and commanding influence over their domain.",
     "reversed": "Rigid dogmatism or using power to control rather than elevate.",
     "description": "King of Wands embodies the essence of energy, passion, ambition, creativity with the archetype of the King.",
-    "symbolColor": "#f97316"
+    "symbolColor": "#f97316",
+    "image": "/cards/Wands14.png"
   },
   {
     "id": "cups_ace",
@@ -699,7 +735,8 @@
     "upright": "A raw gift of Emotions, Love, Intuition, Relationships energy emerges. A powerful seed is planted with infinite upside.",
     "reversed": "Creative blockage, hesitating to plant the seed, or misdirected potential.",
     "description": "Ace of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Ace.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups01.png"
   },
   {
     "id": "cups_2",
@@ -718,7 +755,8 @@
     "upright": "Finding equilibrium between choices or creating an intentional blueprint for expansion.",
     "reversed": "Struggling to balance dual demands or indecisiveness stalling progress.",
     "description": "Two of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Two.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups02.png"
   },
   {
     "id": "cups_3",
@@ -737,7 +775,8 @@
     "upright": "Early results show promise. Teamwork, creative synergy, and expanding horizons take flight.",
     "reversed": "Cooperation breaking down or plans requiring reassessment.",
     "description": "Three of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Three.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups03.png"
   },
   {
     "id": "cups_4",
@@ -756,7 +795,8 @@
     "upright": "A solid container, safe sanctuary, and grounded stability to build upon.",
     "reversed": "Security becoming a gilded cage or feeling stagnant.",
     "description": "Four of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Four.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups04.png"
   },
   {
     "id": "cups_5",
@@ -775,7 +815,8 @@
     "upright": "A constructive friction or test revealing what is genuine and what must evolve.",
     "reversed": "The worst of the conflict has passed; healing and reconciliation begin.",
     "description": "Five of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Five.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups05.png"
   },
   {
     "id": "cups_6",
@@ -794,7 +835,8 @@
     "upright": "Victory, kind gestures, restoring flow, and sweet reciprocal blessings.",
     "reversed": "Unbalanced exchanges or lingering too long in nostalgic reverie.",
     "description": "Six of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Six.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups06.png"
   },
   {
     "id": "cups_7",
@@ -813,7 +855,8 @@
     "upright": "Pause to assess your harvest or defend your sacred position with strategic insight.",
     "reversed": "Second-guessing your efforts right before breakthrough.",
     "description": "Seven of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Seven.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups07.png"
   },
   {
     "id": "cups_8",
@@ -832,7 +875,8 @@
     "upright": "Focused craftsmanship, rapid movement, and dedicated cultivation of excellence.",
     "reversed": "Overworking without joy, or rushed execution causing mistakes.",
     "description": "Eight of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Eight.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups08.png"
   },
   {
     "id": "cups_9",
@@ -851,7 +895,8 @@
     "upright": "You stand resilient, sovereign, and poised for fulfillment. Guard what matters most.",
     "reversed": "Exhaustion at the finish line; remember to rest and accept support.",
     "description": "Nine of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Nine.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups09.png"
   },
   {
     "id": "cups_10",
@@ -870,7 +915,8 @@
     "upright": "Full fruition of this suit's journey. A legacy established and cycle fulfilled.",
     "reversed": "Carrying unnecessary baggage or struggling under accumulated burdens.",
     "description": "Ten of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Ten.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups10.png"
   },
   {
     "id": "cups_page",
@@ -889,7 +935,8 @@
     "upright": "The young explorer bringing messages of curiosity, wonder, and fresh inspiration.",
     "reversed": "Scatterbrained curiosity without follow-through, or petty distractions.",
     "description": "Page of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Page.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups11.png"
   },
   {
     "id": "cups_knight",
@@ -908,7 +955,8 @@
     "upright": "Galloping forward with purpose and devotion to their chosen quest.",
     "reversed": "Impulsive rush causing collateral damage, or lack of stamina.",
     "description": "Knight of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Knight.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups12.png"
   },
   {
     "id": "cups_queen",
@@ -927,7 +975,8 @@
     "upright": "A deeply embodied master holding sovereign authority with gentle grace.",
     "reversed": "Allowing insecurity to cloud inner warmth and self-worth.",
     "description": "Queen of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the Queen.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups13.png"
   },
   {
     "id": "cups_king",
@@ -946,7 +995,8 @@
     "upright": "Mature mastery, visionary governance, and commanding influence over their domain.",
     "reversed": "Rigid dogmatism or using power to control rather than elevate.",
     "description": "King of Cups embodies the essence of emotions, love, intuition, relationships with the archetype of the King.",
-    "symbolColor": "#38bdf8"
+    "symbolColor": "#38bdf8",
+    "image": "/cards/Cups14.png"
   },
   {
     "id": "swords_ace",
@@ -965,7 +1015,8 @@
     "upright": "A raw gift of Mind, Intellect, Truth, Challenges energy emerges. A powerful seed is planted with infinite upside.",
     "reversed": "Creative blockage, hesitating to plant the seed, or misdirected potential.",
     "description": "Ace of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Ace.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords01.png"
   },
   {
     "id": "swords_2",
@@ -984,7 +1035,8 @@
     "upright": "Finding equilibrium between choices or creating an intentional blueprint for expansion.",
     "reversed": "Struggling to balance dual demands or indecisiveness stalling progress.",
     "description": "Two of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Two.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords02.png"
   },
   {
     "id": "swords_3",
@@ -1003,7 +1055,8 @@
     "upright": "Early results show promise. Teamwork, creative synergy, and expanding horizons take flight.",
     "reversed": "Cooperation breaking down or plans requiring reassessment.",
     "description": "Three of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Three.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords03.png"
   },
   {
     "id": "swords_4",
@@ -1022,7 +1075,8 @@
     "upright": "A solid container, safe sanctuary, and grounded stability to build upon.",
     "reversed": "Security becoming a gilded cage or feeling stagnant.",
     "description": "Four of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Four.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords04.png"
   },
   {
     "id": "swords_5",
@@ -1041,7 +1095,8 @@
     "upright": "A constructive friction or test revealing what is genuine and what must evolve.",
     "reversed": "The worst of the conflict has passed; healing and reconciliation begin.",
     "description": "Five of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Five.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords05.png"
   },
   {
     "id": "swords_6",
@@ -1060,7 +1115,8 @@
     "upright": "Victory, kind gestures, restoring flow, and sweet reciprocal blessings.",
     "reversed": "Unbalanced exchanges or lingering too long in nostalgic reverie.",
     "description": "Six of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Six.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords06.png"
   },
   {
     "id": "swords_7",
@@ -1079,7 +1135,8 @@
     "upright": "Pause to assess your harvest or defend your sacred position with strategic insight.",
     "reversed": "Second-guessing your efforts right before breakthrough.",
     "description": "Seven of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Seven.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords07.png"
   },
   {
     "id": "swords_8",
@@ -1098,7 +1155,8 @@
     "upright": "Focused craftsmanship, rapid movement, and dedicated cultivation of excellence.",
     "reversed": "Overworking without joy, or rushed execution causing mistakes.",
     "description": "Eight of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Eight.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords08.png"
   },
   {
     "id": "swords_9",
@@ -1117,7 +1175,8 @@
     "upright": "You stand resilient, sovereign, and poised for fulfillment. Guard what matters most.",
     "reversed": "Exhaustion at the finish line; remember to rest and accept support.",
     "description": "Nine of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Nine.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords09.png"
   },
   {
     "id": "swords_10",
@@ -1136,7 +1195,8 @@
     "upright": "Full fruition of this suit's journey. A legacy established and cycle fulfilled.",
     "reversed": "Carrying unnecessary baggage or struggling under accumulated burdens.",
     "description": "Ten of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Ten.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords10.png"
   },
   {
     "id": "swords_page",
@@ -1155,7 +1215,8 @@
     "upright": "The young explorer bringing messages of curiosity, wonder, and fresh inspiration.",
     "reversed": "Scatterbrained curiosity without follow-through, or petty distractions.",
     "description": "Page of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Page.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords11.png"
   },
   {
     "id": "swords_knight",
@@ -1174,7 +1235,8 @@
     "upright": "Galloping forward with purpose and devotion to their chosen quest.",
     "reversed": "Impulsive rush causing collateral damage, or lack of stamina.",
     "description": "Knight of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Knight.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords12.png"
   },
   {
     "id": "swords_queen",
@@ -1193,7 +1255,8 @@
     "upright": "A deeply embodied master holding sovereign authority with gentle grace.",
     "reversed": "Allowing insecurity to cloud inner warmth and self-worth.",
     "description": "Queen of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the Queen.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords13.png"
   },
   {
     "id": "swords_king",
@@ -1212,7 +1275,8 @@
     "upright": "Mature mastery, visionary governance, and commanding influence over their domain.",
     "reversed": "Rigid dogmatism or using power to control rather than elevate.",
     "description": "King of Swords embodies the essence of mind, intellect, truth, challenges with the archetype of the King.",
-    "symbolColor": "#a855f7"
+    "symbolColor": "#a855f7",
+    "image": "/cards/Swords14.png"
   },
   {
     "id": "pentacles_ace",
@@ -1231,7 +1295,8 @@
     "upright": "A raw gift of Material Wealth, Career, Health, Foundation energy emerges. A powerful seed is planted with infinite upside.",
     "reversed": "Creative blockage, hesitating to plant the seed, or misdirected potential.",
     "description": "Ace of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Ace.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles01.png"
   },
   {
     "id": "pentacles_2",
@@ -1250,7 +1315,8 @@
     "upright": "Finding equilibrium between choices or creating an intentional blueprint for expansion.",
     "reversed": "Struggling to balance dual demands or indecisiveness stalling progress.",
     "description": "Two of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Two.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles02.png"
   },
   {
     "id": "pentacles_3",
@@ -1269,7 +1335,8 @@
     "upright": "Early results show promise. Teamwork, creative synergy, and expanding horizons take flight.",
     "reversed": "Cooperation breaking down or plans requiring reassessment.",
     "description": "Three of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Three.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles03.png"
   },
   {
     "id": "pentacles_4",
@@ -1288,7 +1355,8 @@
     "upright": "A solid container, safe sanctuary, and grounded stability to build upon.",
     "reversed": "Security becoming a gilded cage or feeling stagnant.",
     "description": "Four of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Four.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles04.png"
   },
   {
     "id": "pentacles_5",
@@ -1307,7 +1375,8 @@
     "upright": "A constructive friction or test revealing what is genuine and what must evolve.",
     "reversed": "The worst of the conflict has passed; healing and reconciliation begin.",
     "description": "Five of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Five.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles05.png"
   },
   {
     "id": "pentacles_6",
@@ -1326,7 +1395,8 @@
     "upright": "Victory, kind gestures, restoring flow, and sweet reciprocal blessings.",
     "reversed": "Unbalanced exchanges or lingering too long in nostalgic reverie.",
     "description": "Six of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Six.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles06.png"
   },
   {
     "id": "pentacles_7",
@@ -1345,7 +1415,8 @@
     "upright": "Pause to assess your harvest or defend your sacred position with strategic insight.",
     "reversed": "Second-guessing your efforts right before breakthrough.",
     "description": "Seven of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Seven.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles07.png"
   },
   {
     "id": "pentacles_8",
@@ -1364,7 +1435,8 @@
     "upright": "Focused craftsmanship, rapid movement, and dedicated cultivation of excellence.",
     "reversed": "Overworking without joy, or rushed execution causing mistakes.",
     "description": "Eight of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Eight.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles08.png"
   },
   {
     "id": "pentacles_9",
@@ -1383,7 +1455,8 @@
     "upright": "You stand resilient, sovereign, and poised for fulfillment. Guard what matters most.",
     "reversed": "Exhaustion at the finish line; remember to rest and accept support.",
     "description": "Nine of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Nine.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles09.png"
   },
   {
     "id": "pentacles_10",
@@ -1402,7 +1475,8 @@
     "upright": "Full fruition of this suit's journey. A legacy established and cycle fulfilled.",
     "reversed": "Carrying unnecessary baggage or struggling under accumulated burdens.",
     "description": "Ten of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Ten.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles10.png"
   },
   {
     "id": "pentacles_page",
@@ -1421,7 +1495,8 @@
     "upright": "The young explorer bringing messages of curiosity, wonder, and fresh inspiration.",
     "reversed": "Scatterbrained curiosity without follow-through, or petty distractions.",
     "description": "Page of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Page.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles11.png"
   },
   {
     "id": "pentacles_knight",
@@ -1440,7 +1515,8 @@
     "upright": "Galloping forward with purpose and devotion to their chosen quest.",
     "reversed": "Impulsive rush causing collateral damage, or lack of stamina.",
     "description": "Knight of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Knight.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles12.png"
   },
   {
     "id": "pentacles_queen",
@@ -1459,7 +1535,8 @@
     "upright": "A deeply embodied master holding sovereign authority with gentle grace.",
     "reversed": "Allowing insecurity to cloud inner warmth and self-worth.",
     "description": "Queen of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the Queen.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles13.png"
   },
   {
     "id": "pentacles_king",
@@ -1478,6 +1555,7 @@
     "upright": "Mature mastery, visionary governance, and commanding influence over their domain.",
     "reversed": "Rigid dogmatism or using power to control rather than elevate.",
     "description": "King of Pentacles embodies the essence of material wealth, career, health, foundation with the archetype of the King.",
-    "symbolColor": "#eab308"
+    "symbolColor": "#eab308",
+    "image": "/cards/Pentacles14.png"
   }
 ]

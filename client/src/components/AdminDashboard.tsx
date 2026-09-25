@@ -208,13 +208,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
                   required
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Admin Password (default: tarot2026)"
-                  className="w-full px-4 py-3 pl-10 rounded-xl bg-purple-950/40 border border-purple-500/40 text-purple-100 placeholder-purple-500/50 text-sm focus:outline-none focus:border-amber-400 transition"
+                  placeholder="Enter Reader Sanctuary Key"
+                  className="w-full px-4 py-3.5 pl-10 rounded-xl bg-black/60 border border-[#d4af37]/40 text-[#fef08a] placeholder-[#9ca3af]/60 text-sm focus:outline-none focus:border-[#d4af37] transition font-serif"
                 />
-                <KeyRound size={16} className="absolute left-3.5 top-3.5 text-purple-400" />
+                <KeyRound size={16} className="absolute left-3.5 top-4 text-[#d4af37]" />
               </div>
               {loginError && (
-                <p className="text-rose-400 text-xs text-left mt-2 flex items-center gap-1">
+                <p className="text-rose-400 text-xs text-left mt-2 flex items-center gap-1 font-serif">
                   <AlertTriangle size={13} /> {loginError}
                 </p>
               )}
@@ -223,15 +223,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
             <button
               type="submit"
               disabled={isLoggingIn}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-purple-600 to-amber-600 text-white font-semibold text-sm tracking-wide shadow-lg shadow-amber-500/20 hover:brightness-110 transition disabled:opacity-50"
+              className="w-full py-4 rounded-xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-xs uppercase tracking-widest border border-[#d4af37]/50 shadow-xl transition disabled:opacity-50"
             >
-              {isLoggingIn ? 'Verifying...' : 'Unlock Reader Sanctuary'}
+              {isLoggingIn ? 'Unlocking Arcana...' : 'Enter Reader Sanctum'}
             </button>
           </form>
-
-          <div className="mt-6 pt-4 border-t border-purple-500/20 text-[11px] text-purple-400/80">
-            Default test password: <code className="text-amber-300 bg-purple-950/60 px-1.5 py-0.5 rounded">tarot2026</code> (configured in <code className="text-purple-300">.env</code>)
-          </div>
         </div>
       </div>
     );

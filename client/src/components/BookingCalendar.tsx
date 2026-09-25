@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Globe, Sparkles, CheckCircle2, Copy, ArrowRight, Heart, Briefcase, Compass, Sun, ShieldCheck } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Globe, Sparkles, CheckCircle2, Copy, ArrowRight, Heart, Briefcase, Compass, Sun, ShieldCheck, Flame } from 'lucide-react';
 
 import { BACKEND_URL } from '../utils/apiConfig';
 
@@ -148,15 +148,15 @@ END:VCALENDAR`;
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Intro Header */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium uppercase tracking-widest mb-3">
-          <Sparkles size={14} className="text-amber-400" />
-          <span>Real-Time Virtual Sanctuary</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1e1333] border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel font-semibold uppercase tracking-widest mb-3">
+          <Flame size={14} className="text-amber-400 animate-pulse" />
+          <span>The Mystic Arcana Sanctuary</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-purple-200 to-amber-100 tracking-tight mb-3">
-          Book Your Live Tarot Experience
+        <h1 className="text-3xl sm:text-5xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#e2d5b8] to-[#d4af37] tracking-tight mb-3 drop-shadow">
+          Book Your Sacred Tarot Reading
         </h1>
-        <p className="text-purple-300/80 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
-          Step into a live, synced 2-person ritual with your reader. Connect with the 78 sacred cards, shuffle in real-time, draw your Life, Love, and Career trinity, and receive channeled live wisdom.
+        <p className="text-[#e2d5b8]/85 max-w-xl mx-auto text-sm sm:text-base leading-relaxed font-serif">
+          Curated by <strong className="text-[#fef08a]">Founder Vedant Baviskar</strong> & <strong className="text-[#fef08a]">Co-Founder Anvii Panchal</strong>. Step into a synchronized 2-person esoteric chamber with your reader. Experience the authentic 78 Rider-Waite arcana, live split shuffle, and sacred channeled guidance.
         </p>
       </div>
 
@@ -402,13 +402,13 @@ END:VCALENDAR`;
             <button
               type="submit"
               disabled={isSubmitting || !clientName || !clientEmail}
-              className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-purple-600 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-semibold text-base tracking-wide shadow-xl shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
+              className="w-full sm:w-auto px-12 py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
             >
-              <Sparkles size={18} />
-              <span>{isSubmitting ? 'Resonating with the Deck...' : 'Confirm Reading Slot & Create Sanctuary Room'}</span>
+              <Sparkles size={18} className="text-[#facc15]" />
+              <span>{isSubmitting ? 'Resonating with the Arcana...' : 'Confirm Sacred Slot & Enter Sanctuary'}</span>
             </button>
-            <p className="text-[12px] text-purple-400/70 mt-3">
-              🔒 Instant confirmation. You can test or enter the live room at any time.
+            <p className="text-[12px] text-[#e2d5b8]/70 font-cinzel tracking-wider mt-3">
+              🔒 Consecrated reading slot. Encrypted & synchronized room created instantly.
             </p>
           </div>
         </form>

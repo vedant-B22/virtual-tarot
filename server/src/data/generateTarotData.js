@@ -436,12 +436,25 @@ const ranks = [
   }
 ];
 
-const allCards = [...majorArcanaData];
+const majorFilenames = [
+  '00-TheFool.png', '01-TheMagician.png', '02-TheHighPriestess.png', '03-TheEmpress.png',
+  '04-TheEmperor.png', '05-TheHierophant.png', '06-TheLovers.png', '07-TheChariot.png',
+  '08-Strength.png', '09-TheHermit.png', '10-WheelOfFortune.png', '11-Justice.png',
+  '12-TheHangedMan.png', '13-Death.png', '14-Temperance.png', '15-TheDevil.png',
+  '16-TheTower.png', '17-TheStar.png', '18-TheMoon.png', '19-TheSun.png',
+  '20-Judgement.png', '21-TheWorld.png'
+];
+
+const allCards = majorArcanaData.map(c => ({
+  ...c,
+  image: `/cards/${majorFilenames[c.number]}`
+}));
 
 suits.forEach(suit => {
-  ranks.forEach(rank => {
+  ranks.forEach((rank, rIdx) => {
     const cardName = `${rank.name} of ${suit.name}`;
     const cardId = `${suit.key}_${rank.rank}`;
+    const rankNumStr = String(rIdx + 1).padStart(2, '0');
     allCards.push({
       id: cardId,
       name: cardName,
@@ -454,12 +467,13 @@ suits.forEach(suit => {
       upright: rank.uprightDesc.replace("{element}", suit.domain),
       reversed: rank.reversedDesc,
       description: `${cardName} embodies the essence of ${suit.domain.toLowerCase()} with the archetype of the ${rank.name}.`,
-      symbolColor: suit.color
+      symbolColor: suit.color,
+      image: `/cards/${suit.name}${rankNumStr}.png`
     });
   });
 });
 
-console.log(`Generated ${allCards.length} tarot cards.`);
+console.log(`Generated ${allCards.length} tarot cards with authentic Rider-Waite illustrations.`);
 
 const outputDir = path.join(__dirname);
 fs.writeFileSync(path.join(outputDir, 'tarotDeck.json'), JSON.stringify(allCards, null, 2));

@@ -13,6 +13,7 @@ export interface TarotCardData {
   reversed: string;
   description: string;
   symbolColor?: string;
+  image?: string;
 }
 
 export type CardCategory = 'Life' | 'Love' | 'Career';
