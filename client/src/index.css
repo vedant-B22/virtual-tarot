@@ -7,11 +7,12 @@
   }
   
   body {
-    background-color: #06040a;
+    background-color: #040108;
     background-image: 
-      radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 10% 90%, rgba(88, 28, 135, 0.12) 0%, transparent 60%),
-      radial-gradient(circle at 90% 80%, rgba(180, 83, 9, 0.09) 0%, transparent 50%);
+      radial-gradient(circle at 50% 5%, rgba(127, 29, 29, 0.16) 0%, transparent 55%),
+      radial-gradient(circle at 10% 85%, rgba(76, 5, 25, 0.2) 0%, transparent 60%),
+      radial-gradient(circle at 90% 80%, rgba(88, 28, 135, 0.18) 0%, transparent 55%),
+      radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
     color: #eedec5;
     font-family: 'EB Garamond', Georgia, serif;
     overflow-x: hidden;
@@ -27,9 +28,9 @@
   }
 }
 
-/* 3D Perspective for Card Flips */
+/* 3D Perspective for Realistic Shuffling and Flips */
 .perspective-1000 {
-  perspective: 1200px;
+  perspective: 1600px;
 }
 
 .transform-style-3d {
@@ -45,13 +46,17 @@
   transform: rotateY(180deg);
 }
 
-/* Gothic Gold & Mystical Glow Effects */
+/* Gothic Gold & Vampire Crimson Glow Effects */
 .gothic-glow {
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), 0 0 60px rgba(126, 34, 206, 0.2);
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.35), 0 0 70px rgba(127, 29, 29, 0.3);
 }
 
 .gold-glow {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.45), inset 0 0 15px rgba(212, 175, 55, 0.15);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.vampire-glow {
+  box-shadow: 0 0 35px rgba(159, 18, 57, 0.5), 0 0 70px rgba(76, 5, 25, 0.35);
 }
 
 .life-glow {
@@ -66,48 +71,54 @@
   box-shadow: 0 0 25px rgba(251, 191, 36, 0.4), 0 0 50px rgba(217, 119, 6, 0.15);
 }
 
-/* Custom Scrollbar */
+/* Cinematic Theatrical Screen Vignette */
+.cinematic-vignette {
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.85) 100%);
+  pointer-events: none;
+}
+
+/* Custom Ornate Scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #090611;
+  background: #06020c;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3b2818;
-  border: 1px solid #78531d;
+  background: #4c0519;
+  border: 1px solid #d4af37;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #5d3f18;
+  background: #7f1d1d;
 }
 
 /* Candle Flame & Ember Keyframes */
 @keyframes candle-flicker {
   0%, 100% {
-    opacity: 0.9;
+    opacity: 0.95;
     transform: scale(1) translateY(0);
-    filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.8));
+    filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.85)) drop-shadow(0 0 30px rgba(217, 119, 6, 0.4));
   }
   25% {
-    opacity: 0.75;
-    transform: scale(0.97) translateY(1px);
-    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.6));
+    opacity: 0.8;
+    transform: scale(0.96) translateY(1px);
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.65));
   }
   50% {
     opacity: 1;
-    transform: scale(1.04) translateY(-1px);
-    filter: drop-shadow(0 0 22px rgba(251, 191, 36, 0.9));
+    transform: scale(1.05) translateY(-1.5px);
+    filter: drop-shadow(0 0 25px rgba(251, 191, 36, 0.95)) drop-shadow(0 0 40px rgba(180, 83, 9, 0.6));
   }
   75% {
-    opacity: 0.85;
+    opacity: 0.88;
     transform: scale(0.98) translateY(0.5px);
   }
 }
 
 .animate-candle {
-  animation: candle-flicker 3s ease-in-out infinite;
+  animation: candle-flicker 2.8s ease-in-out infinite;
 }
 
 @keyframes float-ember {
@@ -116,24 +127,38 @@
     opacity: 0;
   }
   30% {
-    opacity: 0.6;
+    opacity: 0.7;
   }
   80% {
-    opacity: 0.8;
+    opacity: 0.9;
   }
   100% {
-    transform: translateY(-80px) rotate(360deg);
+    transform: translateY(-90px) rotate(360deg);
     opacity: 0;
   }
 }
 
 .animate-ember {
-  animation: float-ember 5s ease-in infinite;
+  animation: float-ember 5.5s ease-in infinite;
+}
+
+/* Slow Mystic Spin */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 35s linear infinite;
 }
 
 /* Parchment texture effect */
 .parchment-panel {
-  background: linear-gradient(135deg, rgba(26, 17, 40, 0.95) 0%, rgba(13, 9, 23, 0.98) 100%);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(212, 175, 55, 0.2);
+  background: linear-gradient(135deg, rgba(36, 6, 20, 0.95) 0%, rgba(13, 3, 20, 0.98) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), inset 0 1px 2px rgba(212, 175, 55, 0.25);
 }

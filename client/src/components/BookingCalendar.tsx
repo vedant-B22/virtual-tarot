@@ -16,7 +16,6 @@ import {
   Shield
 } from 'lucide-react';
 import { FoundersBanner } from './FoundersBanner';
-import { DeckShuffleAnimation } from './DeckShuffleAnimation';
 import { BACKEND_URL } from '../utils/apiConfig';
 
 interface BookingCalendarProps {
@@ -247,29 +246,6 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
     <div className="max-w-5xl mx-auto px-4 py-8">
       {/* 1. Grand Founders Showcase (Prominent at top) */}
       <FoundersBanner />
-
-      {/* 2. Interactive 3D Deck Shuffling Altar (Pre-reading connection) */}
-      {bookingStep === 'details' && (
-        <div className="w-full my-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#200511]/90 via-[#0e0317]/95 to-[#06020c]/98 border-2 border-[#d4af37]/60 shadow-[0_0_50px_rgba(212,175,55,0.2)] text-center relative overflow-hidden">
-          <div className="absolute top-2 left-4 text-[#d4af37]/50 text-sm">❖</div>
-          <div className="absolute top-2 right-4 text-[#d4af37]/50 text-sm">❖</div>
-          <div className="text-center relative z-10 mb-2">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/60 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-1.5 shadow-inner">
-              <Sparkles size={12} className="text-[#facc15] animate-pulse" />
-              <span>Interactive 3D Divination Altar</span>
-              <Sparkles size={12} className="text-[#facc15] animate-pulse" />
-            </div>
-            <h3 className="text-xl sm:text-3xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37]">
-              Attune Your Energy: Shuffle the 78 Arcana
-            </h3>
-            <p className="text-xs text-[#e2d5b8]/80 font-serif italic max-w-md mx-auto mt-1">
-              Focus on your heart&apos;s inquiry and click below to watch the physical 3D cut, riffle, and bridge cascade.
-            </p>
-          </div>
-
-          <DeckShuffleAnimation />
-        </div>
-      )}
 
       {/* ================= STEP 3: SUBMITTED & AWAITING READER APPROVAL ================= */}
       {bookingStep === 'completed' && createdBooking && (

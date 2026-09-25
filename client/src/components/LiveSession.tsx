@@ -637,23 +637,26 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
         {/* ================= STEP 2: SHUFFLE ================= */}
         {currentStep === 2 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto py-4"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto py-4 relative"
           >
-            <div className="mb-2">
-              <span className="text-xs uppercase tracking-widest text-[#d4af37] font-cinzel font-bold">
-                Step 2: Sacred Split & Riffle Shuffle
-              </span>
-              <h2 className="text-2xl sm:text-4xl font-gothic-title font-bold text-[#fef08a] mt-1 drop-shadow">
-                Infuse the 78 Arcana with Your Will
+            {/* Theatrical Subtitle Header */}
+            <div className="mb-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/70 border border-[#d4af37]/50 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2 shadow-inner">
+                <Sparkles size={13} className="text-[#facc15] animate-pulse" />
+                <span>Act II • The Sacred Weave & 3D Aerial Shuffle</span>
+                <Sparkles size={13} className="text-[#facc15] animate-pulse" />
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37] mt-1 drop-shadow-[0_2px_15px_rgba(212,175,55,0.6)]">
+                Infuse the 78 Arcana with Sacred Will
               </h2>
-              <p className="text-xs sm:text-sm text-[#e2d5b8]/80 mt-1 max-w-lg mx-auto font-serif">
-                Watch the sacred deck divide, riffle, and interlock in real-time across both screens.
+              <p className="text-xs sm:text-sm text-[#e2d5b8]/90 mt-2 max-w-xl mx-auto font-serif leading-relaxed">
+                As above, so below. The 78 Rider-Waite cards physically levitate, separate into the celestial vortex, and interleave in real-time across both your screen and the Reader&apos;s altar.
               </p>
             </div>
 
-            {/* 3D Physics Split & Riffle Deck Shuffle Animation */}
+            {/* 3D Advanced Magical Deck Shuffle Animation */}
             <DeckShuffleAnimation
               isShuffling={Boolean(session?.isShuffling)}
               onShuffleTrigger={handleTriggerShuffle}
@@ -661,13 +664,13 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
             />
 
             {/* Proceed to Spread */}
-            <div className="mt-4">
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => handleAdvanceStep(3)}
-                className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#9a3412] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-xs uppercase tracking-widest border border-[#d4af37]/60 shadow-[0_0_20px_rgba(212,175,55,0.3)] transition flex items-center gap-2 hover:scale-105"
+                className="px-10 py-4 rounded-2xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] hover:from-[#991b1b] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-xs uppercase tracking-widest border-2 border-[#d4af37]/80 shadow-[0_0_30px_rgba(212,175,55,0.45)] transition flex items-center justify-center gap-2.5 hover:scale-105"
               >
                 <span>Spread the 78 Cards Across Altar</span>
-                <ArrowRight size={16} />
+                <ArrowRight size={18} />
               </button>
             </div>
           </motion.div>
