@@ -181,11 +181,6 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
   };
 
   const handleFinalSubmit = async () => {
-    if (!paymentScreenshot) {
-      alert('Please upload your payment confirmation screenshot so Reader Vedant can verify and unlock your chamber.');
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/bookings`, {
@@ -378,7 +373,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
           {/* Screenshot Upload Zone */}
           <div className="space-y-4 mb-6">
             <label className="block text-xs uppercase tracking-[0.15em] text-[#c5a059] font-cinzel font-bold">
-              Upload Payment Confirmation Screenshot *
+              Upload Payment Confirmation Screenshot (Optional)
             </label>
 
             {paymentScreenshot ? (
@@ -400,10 +395,10 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
               <label className="border-2 border-dashed border-[#c5a059]/40 hover:border-[#c5a059] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-[#090510]/60 hover:bg-[#150a24]/50 transition group">
                 <Upload size={30} className="text-[#c5a059] group-hover:scale-110 transition-transform mb-2" />
                 <span className="font-cinzel text-xs font-bold text-[#f7eedc] uppercase tracking-wider">
-                  Select Payment Screenshot (PNG/JPG)
+                  Select Payment Screenshot (Optional)
                 </span>
                 <span className="text-[11px] text-[#8e8274] mt-1 font-serif">
-                  Must clearly display the ₹{selectedPrice} amount & UPI transaction ref
+                  Optional: Attach payment receipt or enter your UPI reference number below
                 </span>
                 <input
                   type="file"
@@ -440,7 +435,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
 
             <button
               type="button"
-              disabled={isSubmitting || !paymentScreenshot}
+              disabled={isSubmitting}
               onClick={handleFinalSubmit}
               className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#2f0714] via-[#4d1024] to-[#1c0827] hover:from-[#3f0a1b] hover:to-[#2b0c3c] text-[#f7eedc] font-cinzel font-bold text-xs uppercase tracking-[0.2em] border border-[#c5a059]/70 shadow-[0_0_25px_rgba(197,160,89,0.35)] transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:scale-[1.01]"
             >
