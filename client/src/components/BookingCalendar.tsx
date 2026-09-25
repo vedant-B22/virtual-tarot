@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, Clock, Globe, Sparkles, CheckCircle2, Copy, ArrowRight, Heart, Briefcase, Compass, Sun, ShieldCheck } from 'lucide-react';
 
+import { BACKEND_URL } from '../utils/apiConfig';
+
 interface BookingCalendarProps {
   onJoinSession: (sessionId: string, clientName: string) => void;
 }
@@ -81,7 +83,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/bookings', {
+      const res = await fetch(`${BACKEND_URL}/api/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

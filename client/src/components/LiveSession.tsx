@@ -6,6 +6,7 @@ import type { SessionState, CardCategory, TarotCardData } from '../types/tarot';
 import { TarotCard } from './TarotCard';
 import { VideoRoom } from './VideoRoom';
 import { audioEngine } from '../utils/audio';
+import { BACKEND_URL } from '../utils/apiConfig';
 import tarotDeckData from '../data/tarotDeck.json';
 import {
   Sparkles,
@@ -59,7 +60,7 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
 
   // Setup Socket Connection
   useEffect(() => {
-    const s = io({
+    const s = io(BACKEND_URL || undefined, {
       transports: ['websocket', 'polling'],
       reconnectionAttempts: 10
     });

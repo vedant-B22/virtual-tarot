@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Booking } from '../types/tarot';
+import { BACKEND_URL } from '../utils/apiConfig';
 import { Shield, KeyRound, Calendar, Clock, User, Mail, Compass, Check, X, AlertTriangle, ExternalLink, RefreshCw, Eye, Sparkles, Trash2 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -48,7 +49,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
       return;
     }
     try {
-      const res = await fetch('/api/admin/check', {
+      const res = await fetch(`${BACKEND_URL}/api/admin/check`, {
         headers: { 'x-admin-token': token }
       });
       const data = await res.json();
@@ -71,7 +72,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
     setLoginError('');
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await fetch(`${BACKEND_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: passwordInput })
@@ -103,8 +104,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
     try {
       const token = sessionStorage.getItem('tarot_admin_token') || 'tarot2026';
       const [bookingsRes, emailsRes] = await Promise.all([
-        fetch('/api/bookings'),
-        fetch('/api/emails', { headers: { 'x-admin-token': token } })
+        fetch(`${BACKEND_URL}/api/bookings`),
+        fetch(`${BACKEND_URL}/api/emails`, { headers: { 'x-admin-token': token } })
       ]);
 
       const bookingsData = await bookingsRes.json();
@@ -127,7 +128,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
 
   const updateBookingStatus = async (bookingId: string, status: 'confirmed' | 'rescheduled' | 'cancelled' | 'completed') => {
     try {
-      const res = await fetch(`/api/bookings/${bookingId}`, {
+      const res = await fetch(`${BACKEND_URL}/api/bookings/${bookingId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +147,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
   const deleteBooking = async (bookingId: string) => {
     if (!confirm('Are you sure you want to remove this booking?')) return;
     try {
-      const res = await fetch(`/api/bookings/${bookingId}`, {
+      const res = await fetch(`${BACKEND_URL}/api/bookings/${bookingId}`, {
         method: 'DELETE',
         headers: { 'x-admin-token': adminToken }
       });
@@ -163,7 +164,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onJoinSessionAsA
     if (!reschedulingBooking || !newDate || !newTime) return;
 
     try {
-      const res = await fetch(`/api/bookings/${reschedulingBooking.id}`, {
+      const res = await fetch(`${BACKEND_URL}/api/bookings/${reschedulingBooking.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -400,16 +400,16 @@
         "admin": {
           "socketId": "ni1InEV8Y3UtYZY3AAAA",
           "name": "Reader (Admin)",
-          "online": true
+          "online": false
         },
         "client": {
           "socketId": "8Jwa_rmY0njBBGjYAAAB",
           "name": "Seeker",
-          "online": true
+          "online": false
         }
       },
       "webrtcActive": false,
-      "updatedAt": "2026-09-25T15:46:48.650Z"
+      "updatedAt": "2026-09-25T15:59:12.441Z"
     }
   },
   "emailLogs": [
