@@ -1,11 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Globe, Sparkles, Copy, ArrowRight, Heart, Briefcase, Compass, Sun, ShieldCheck, Upload, QrCode, Shield } from 'lucide-react';
+import {
+  Calendar as CalendarIcon,
+  Clock,
+  Globe,
+  Sparkles,
+  Copy,
+  ArrowRight,
+  Heart,
+  Briefcase,
+  Compass,
+  Sun,
+  ShieldCheck,
+  Upload,
+  QrCode,
+  Shield
+} from 'lucide-react';
 import { FoundersBanner } from './FoundersBanner';
+import { DeckShuffleAnimation } from './DeckShuffleAnimation';
 import { BACKEND_URL } from '../utils/apiConfig';
 
 interface BookingCalendarProps {
   onJoinSession: (sessionId: string, clientName: string) => void;
 }
+
+const FOCUS_AREAS = [
+  {
+    id: "Life & Destiny",
+    label: "Life & Destiny",
+    price: 130,
+    desc: "Clarity on life path, destiny timeline, personal growth & soul purpose",
+    icon: Compass,
+    color: "text-emerald-400",
+    badgeColor: "bg-emerald-950/80 text-emerald-200 border-emerald-500/50"
+  },
+  {
+    id: "Love & Sacred Union",
+    label: "Love & Sacred Union",
+    price: 150,
+    desc: "Soulmate connections, twin flame alignment, heart healing & relational truth",
+    icon: Heart,
+    color: "text-rose-400",
+    badgeColor: "bg-rose-950/80 text-rose-200 border-rose-500/50"
+  },
+  {
+    id: "Career & Prosperity",
+    label: "Career & Prosperity",
+    price: 120,
+    desc: "Vocation clarity, financial breakthroughs, promotions & business ventures",
+    icon: Briefcase,
+    color: "text-amber-400",
+    badgeColor: "bg-amber-950/80 text-amber-200 border-amber-500/50"
+  },
+  {
+    id: "Spiritual Awakening",
+    label: "Spiritual Awakening",
+    price: 100,
+    desc: "Higher consciousness, intuition channeling, shadow work & karmic release",
+    icon: Sun,
+    color: "text-purple-400",
+    badgeColor: "bg-purple-950/80 text-purple-200 border-purple-500/50"
+  }
+];
 
 const TIME_SLOTS = [
   "10:00 AM",
@@ -16,13 +71,6 @@ const TIME_SLOTS = [
   "05:30 PM",
   "07:00 PM",
   "08:30 PM"
-];
-
-const FOCUS_AREAS = [
-  { id: "Life & Destiny", label: "Life & Destiny", desc: "Clarity on life path, personal growth & inner energy", icon: Compass, color: "text-emerald-400" },
-  { id: "Love & Sacred Union", label: "Love & Sacred Union", desc: "Soul connections, heart healing & relational alignment", icon: Heart, color: "text-pink-400" },
-  { id: "Career & Prosperity", label: "Career & Prosperity", desc: "Work decisions, financial expansion & creative projects", icon: Briefcase, color: "text-amber-400" },
-  { id: "Spiritual Awakening", label: "Spiritual Awakening", desc: "Higher guidance, intuition, shadow work & karmic lessons", icon: Sun, color: "text-purple-400" }
 ];
 
 export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession }) => {
@@ -57,6 +105,9 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
 
   const [copiedLink, setCopiedLink] = useState(false);
 
+  const selectedFocusAreaObj = FOCUS_AREAS.find((f) => f.id === focusArea) || FOCUS_AREAS[0];
+  const selectedPrice = selectedFocusAreaObj.price;
+
   useEffect(() => {
     try {
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -90,10 +141,10 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
       return;
     }
     setBookingStep('payment');
-    window.scrollTo({ top: 400, behavior: 'smooth' });
+    window.scrollTo({ top: 350, behavior: 'smooth' });
   };
 
-  // Handle Payment Screenshot Upload
+  // Handle Payment Screenshot Upload with fast client-side canvas compression
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -139,7 +190,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
   // Step 2: Submit final booking with payment screenshot
   const handleFinalSubmit = async () => {
     if (!paymentScreenshot) {
-      alert('Please upload your payment confirmation screenshot so the Reader can verify and unlock your session.');
+      alert('Please upload your payment confirmation screenshot so Reader Vedant can verify and unlock your session.');
       return;
     }
 
@@ -157,7 +208,8 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
           focus: focusArea,
           notes,
           paymentScreenshot,
-          transactionRef
+          transactionRef,
+          amount: selectedPrice
         })
       });
 
@@ -196,16 +248,42 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
       {/* 1. Grand Founders Showcase (Prominent at top) */}
       <FoundersBanner />
 
-      {/* ================= STEP 3: SUBMITTED & AWAITING READER APPROVAL ================= */}
-      {bookingStep === 'completed' && createdBooking && (
-        <div className="bg-gradient-to-b from-[#1b1030] via-[#110920] to-[#07040d] border-2 border-[#d4af37]/70 rounded-3xl p-6 sm:p-10 shadow-2xl text-center max-w-2xl mx-auto">
-          {/* Hourglass / Sealed Gate Icon */}
-          <div className="w-20 h-20 rounded-full bg-amber-500/20 border-2 border-[#d4af37] text-[#fef08a] flex items-center justify-center mx-auto mb-4 shadow-[0_0_25px_rgba(212,175,55,0.4)]">
-            <Shield size={40} className="animate-pulse" />
+      {/* 2. Interactive 3D Deck Shuffling Altar (Pre-reading connection) */}
+      {bookingStep === 'details' && (
+        <div className="w-full my-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#200511]/90 via-[#0e0317]/95 to-[#06020c]/98 border-2 border-[#d4af37]/60 shadow-[0_0_50px_rgba(212,175,55,0.2)] text-center relative overflow-hidden">
+          <div className="absolute top-2 left-4 text-[#d4af37]/50 text-sm">❖</div>
+          <div className="absolute top-2 right-4 text-[#d4af37]/50 text-sm">❖</div>
+          <div className="text-center relative z-10 mb-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/60 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-1.5 shadow-inner">
+              <Sparkles size={12} className="text-[#facc15] animate-pulse" />
+              <span>Interactive 3D Divination Altar</span>
+              <Sparkles size={12} className="text-[#facc15] animate-pulse" />
+            </div>
+            <h3 className="text-xl sm:text-3xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37]">
+              Attune Your Energy: Shuffle the 78 Arcana
+            </h3>
+            <p className="text-xs text-[#e2d5b8]/80 font-serif italic max-w-md mx-auto mt-1">
+              Focus on your heart&apos;s inquiry and click below to watch the physical 3D cut, riffle, and bridge cascade.
+            </p>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2">
-            <span>Payment Submitted • Approval Pending</span>
+          <DeckShuffleAnimation />
+        </div>
+      )}
+
+      {/* ================= STEP 3: SUBMITTED & AWAITING READER APPROVAL ================= */}
+      {bookingStep === 'completed' && createdBooking && (
+        <div className="bg-gradient-to-b from-[#2d0511] via-[#15041c] to-[#07020e] border-2 border-[#d4af37]/80 rounded-3xl p-6 sm:p-10 shadow-[0_0_60px_rgba(212,175,55,0.3)] text-center max-w-2xl mx-auto relative overflow-hidden">
+          <div className="absolute top-3 left-4 text-[#d4af37]/60 text-sm">❖</div>
+          <div className="absolute top-3 right-4 text-[#d4af37]/60 text-sm">❖</div>
+
+          {/* Hourglass / Sealed Gate Icon */}
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7f1d1d] via-[#581c87] to-[#1c1917] border-2 border-[#d4af37] text-[#fef08a] flex items-center justify-center mx-auto mb-4 shadow-[0_0_30px_rgba(212,175,55,0.5)]">
+            <Shield size={40} className="animate-pulse text-[#fde047]" />
+          </div>
+
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2">
+            <span>Payment Submitted • Awaiting Sanctuary Blessing</span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-gothic-title font-bold text-[#fef08a] mb-2 drop-shadow">
@@ -213,11 +291,11 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
           </h2>
 
           <p className="text-sm text-[#eedec5]/90 font-serif leading-relaxed mb-6">
-            Your sacred slot request has been consecrated. <strong className="text-[#fef08a]">Reader Vedant Baviskar & Anvii Panchal</strong> will verify your payment screenshot in the Reader Sanctum before granting entrance to your live chamber.
+            Your sacred request has been consecrated. <strong className="text-[#fef08a]">Reader Vedant Baviskar & Anvii Panchal</strong> will verify your payment screenshot in the Reader Sanctum before granting entrance to your live chamber.
           </p>
 
           {/* Booking Summary Box */}
-          <div className="bg-black/60 border border-[#d4af37]/35 rounded-2xl p-5 mb-6 text-left space-y-3 font-serif">
+          <div className="bg-black/70 border border-[#d4af37]/35 rounded-2xl p-5 mb-6 text-left space-y-3 font-serif">
             <div className="flex justify-between items-center pb-2 border-b border-[#d4af37]/20 text-xs sm:text-sm">
               <span className="text-[#c4b5fd] flex items-center gap-1.5 font-cinzel">
                 <CalendarIcon size={14} className="text-[#d4af37]" /> Date & Time
@@ -234,9 +312,9 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
             </div>
             <div className="flex justify-between items-center text-xs sm:text-sm">
               <span className="text-[#c4b5fd] flex items-center gap-1.5 font-cinzel">
-                <Compass size={14} className="text-[#d4af37]" /> Inquiry Focus
+                <Compass size={14} className="text-[#d4af37]" /> Inquiry Focus & Offering
               </span>
-              <span className="font-bold text-[#fde047]">{createdBooking.focus}</span>
+              <span className="font-bold text-[#fde047]">{createdBooking.focus} (₹{selectedPrice})</span>
             </div>
           </div>
 
@@ -257,7 +335,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
           {/* Enter Waiting Chamber Button */}
           <button
             onClick={() => onJoinSession(createdBooking.sessionId, createdBooking.clientName)}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.4)] transition flex items-center justify-center gap-2 group"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] hover:from-[#991b1b] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border-2 border-[#d4af37]/70 shadow-[0_0_30px_rgba(212,175,55,0.45)] transition flex items-center justify-center gap-2 group hover:scale-[1.02]"
           >
             <ShieldCheck size={18} className="text-[#fde047]" />
             <span>Enter Sanctuary Waiting Chamber</span>
@@ -271,18 +349,31 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
 
       {/* ================= STEP 2: CONSECRATED PAYMENT & SCREENSHOT UPLOAD ================= */}
       {bookingStep === 'payment' && (
-        <div className="bg-gradient-to-b from-[#1b1030] via-[#110920] to-[#07040d] border-2 border-[#d4af37]/70 rounded-3xl p-6 sm:p-10 shadow-2xl max-w-2xl mx-auto">
-          {/* Header */}
+        <div className="bg-gradient-to-b from-[#2d0511] via-[#15041c] to-[#07020e] border-2 border-[#d4af37]/80 rounded-3xl p-6 sm:p-10 shadow-[0_0_50px_rgba(212,175,55,0.3)] max-w-2xl mx-auto relative overflow-hidden">
+          <div className="absolute top-3 left-4 text-[#d4af37]/60 text-sm">❖</div>
+          <div className="absolute top-3 right-4 text-[#d4af37]/60 text-sm">❖</div>
+
+          {/* Header with Pricing Banner */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2">
               <QrCode size={14} className="text-[#facc15]" />
-              <span>Step 2 of 2: Consecrated Payment</span>
+              <span>Step 2 of 2: Consecrated Offering</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-gothic-title font-bold text-[#fef08a] drop-shadow">
               Scan QR & Upload Verification
             </h2>
+
+            {/* Prominent Exact Price Badge */}
+            <div className="my-3 inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#7f1d1d] border-2 border-[#d4af37] text-[#fef08a] shadow-[0_0_30px_rgba(212,175,55,0.5)]">
+              <span className="text-xs uppercase font-cinzel tracking-wider text-[#eedec5]">Exact Offering:</span>
+              <span className="text-2xl sm:text-3xl font-bold font-gothic-title text-[#fde047] drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]">
+                ₹{selectedPrice}
+              </span>
+              <span className="text-xs text-[#c4b5fd]">({focusArea})</span>
+            </div>
+
             <p className="text-xs sm:text-sm text-[#e2d5b8]/80 font-serif mt-1">
-              Complete your sanctuary offering via PhonePe or any UPI app, then upload the confirmation screenshot below.
+              Scan the sacred QR code below via PhonePe, GPay, Paytm or any UPI app, complete the offering of <strong className="text-[#fde047]">₹{selectedPrice}</strong>, then upload the confirmation screenshot below.
             </p>
           </div>
 
@@ -311,7 +402,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
               {copiedUpi && <span className="text-[10px] text-emerald-400 font-cinzel">Copied!</span>}
             </div>
             <div className="text-[11px] text-[#9ca3af] font-cinzel mt-1">
-              Punjab National Bank • Supported on all UPI Apps
+              Punjab National Bank • Pay exact offering: <strong className="text-[#fde047]">₹{selectedPrice}</strong>
             </div>
           </div>
 
@@ -331,19 +422,19 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                 <button
                   type="button"
                   onClick={() => setPaymentScreenshot(null)}
-                  className="px-3 py-1 rounded-lg bg-rose-950/60 text-rose-300 border border-rose-500/40 text-xs font-cinzel hover:bg-rose-900 transition"
+                  className="text-xs text-rose-400 hover:text-rose-300 font-cinzel underline mt-1"
                 >
                   Change Screenshot
                 </button>
               </div>
             ) : (
-              <label className="border-2 border-dashed border-[#d4af37]/50 hover:border-[#d4af37] bg-black/40 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition-colors group">
+              <label className="border-2 border-dashed border-[#d4af37]/50 hover:border-[#d4af37] rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer bg-black/40 hover:bg-[#1a0f2b]/40 transition group">
                 <Upload size={32} className="text-[#d4af37] group-hover:scale-110 transition-transform mb-2" />
-                <span className="font-cinzel text-sm font-bold text-[#fef08a] mb-1">
-                  Click or Drag to Upload Payment Screenshot
+                <span className="font-cinzel text-xs font-bold text-[#fef08a] uppercase tracking-wider">
+                  Select Payment Screenshot (PNG/JPG)
                 </span>
-                <span className="text-xs text-[#9ca3af] font-serif">
-                  PNG, JPG, or screenshot from PhonePe/Google Pay
+                <span className="text-[11px] text-[#9ca3af] mt-1 font-serif">
+                  Must clearly show transaction amount (₹{selectedPrice}) & UPI Ref / UTR
                 </span>
                 <input
                   type="file"
@@ -354,9 +445,8 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
               </label>
             )}
 
-            {/* Optional Transaction UTR */}
             <div>
-              <label className="block text-xs uppercase tracking-wider text-[#c4b5fd] font-cinzel font-medium mb-1">
+              <label className="block text-xs uppercase tracking-wider text-[#d4af37] font-cinzel font-medium mb-1">
                 Transaction ID / UTR Number (Optional)
               </label>
               <input
@@ -364,17 +454,17 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                 value={transactionRef}
                 onChange={(e) => setTransactionRef(e.target.value)}
                 placeholder="e.g. 12-digit UPI reference number"
-                className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/50 text-sm focus:outline-none focus:border-[#d4af37] transition font-mono"
+                className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/40 font-mono text-xs focus:outline-none focus:border-[#d4af37]"
               />
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <div className="flex gap-3">
             <button
               type="button"
               onClick={() => setBookingStep('details')}
-              className="px-6 py-3.5 rounded-2xl bg-black/50 hover:bg-black/80 text-[#eedec5] border border-[#d4af37]/30 text-xs font-cinzel font-bold uppercase transition"
+              className="px-5 py-3.5 rounded-xl bg-black/60 text-[#eedec5] hover:text-white border border-[#d4af37]/30 font-cinzel text-xs uppercase transition"
             >
               ← Back to Slot
             </button>
@@ -383,10 +473,10 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
               type="button"
               disabled={isSubmitting || !paymentScreenshot}
               onClick={handleFinalSubmit}
-              className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+              className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] hover:from-[#991b1b] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-xs uppercase tracking-widest border-2 border-[#d4af37]/70 shadow-[0_0_25px_rgba(212,175,55,0.4)] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:scale-[1.02]"
             >
-              <Sparkles size={16} className="text-[#fde047]" />
-              <span>{isSubmitting ? 'Transmitting to Sanctum...' : 'Submit Payment for Reader Approval'}</span>
+              <Sparkles size={16} className="text-[#facc15]" />
+              <span>{isSubmitting ? 'Transmitting to Sanctum...' : `Confirm & Transmit ₹${selectedPrice} Offering`}</span>
             </button>
           </div>
         </div>
@@ -396,7 +486,10 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
       {bookingStep === 'details' && (
         <form onSubmit={handleProceedToPayment} className="space-y-8">
           {/* Section 1: Choose Date */}
-          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
+          <div className="bg-gradient-to-b from-[#1b0614]/90 via-[#0e0419]/90 to-[#07020e]/95 border-2 border-[#d4af37]/40 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
+            <div className="absolute top-2 left-4 text-[#d4af37]/50 text-sm">❖</div>
+            <div className="absolute top-2 right-4 text-[#d4af37]/50 text-sm">❖</div>
+
             <div className="flex items-center justify-between mb-4">
               <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2">
                 <CalendarIcon size={16} className="text-[#d4af37]" /> 1. Select Divination Date
@@ -414,7 +507,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                     onClick={() => setSelectedDate(item.dateStr)}
                     className={`p-3 rounded-2xl border text-center transition flex flex-col items-center justify-center ${
                       isSelected
-                        ? 'bg-gradient-to-b from-[#9a3412]/50 to-[#581c87]/50 border-[#d4af37] text-[#fef08a] shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+                        ? 'bg-gradient-to-b from-[#7f1d1d]/60 to-[#581c87]/60 border-[#d4af37] text-[#fef08a] shadow-[0_0_20px_rgba(212,175,55,0.4)]'
                         : 'bg-black/40 border-[#d4af37]/20 text-[#eedec5] hover:border-[#d4af37]/60 hover:bg-[#1a0f2e]/60'
                     }`}
                   >
@@ -428,7 +521,10 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
           </div>
 
           {/* Section 2: Choose Time Slot & Timezone */}
-          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
+          <div className="bg-gradient-to-b from-[#1b0614]/90 via-[#0e0419]/90 to-[#07020e]/95 border-2 border-[#d4af37]/40 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
+            <div className="absolute top-2 left-4 text-[#d4af37]/50 text-sm">❖</div>
+            <div className="absolute top-2 right-4 text-[#d4af37]/50 text-sm">❖</div>
+
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2">
                 <Clock size={16} className="text-[#d4af37]" /> 2. Select Consecrated Time Slot
@@ -465,7 +561,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                     onClick={() => setSelectedTime(time)}
                     className={`py-3 px-4 rounded-xl border font-cinzel font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 ${
                       isSelected
-                        ? 'bg-[#d4af37]/25 border-[#d4af37] text-[#fef08a] shadow-[0_0_15px_rgba(212,175,55,0.25)]'
+                        ? 'bg-gradient-to-r from-[#7f1d1d]/80 to-[#b45309]/80 border-[#d4af37] text-[#fef08a] shadow-[0_0_15px_rgba(212,175,55,0.4)]'
                         : 'bg-black/40 border-[#d4af37]/20 text-[#eedec5] hover:border-[#d4af37]/50 hover:bg-black/60'
                     }`}
                   >
@@ -476,13 +572,19 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
             </div>
           </div>
 
-          {/* Section 3: Focus Area */}
-          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
-            <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2 mb-4">
-              <Compass size={16} className="text-[#d4af37]" /> 3. Reading Focus & Intention
-            </label>
+          {/* Section 3: Focus Area with Clear Pricing */}
+          <div className="bg-gradient-to-b from-[#1b0614]/90 via-[#0e0419]/90 to-[#07020e]/95 border-2 border-[#d4af37]/40 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
+            <div className="absolute top-2 left-4 text-[#d4af37]/50 text-sm">❖</div>
+            <div className="absolute top-2 right-4 text-[#d4af37]/50 text-sm">❖</div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
+            <div className="flex items-center justify-between mb-4">
+              <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2">
+                <Compass size={16} className="text-[#d4af37]" /> 3. Reading Focus & Sacred Offering
+              </label>
+              <span className="text-xs text-[#d4af37] font-cinzel font-semibold">Prices Set by Sanctum</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
               {FOCUS_AREAS.map((f) => {
                 const isSelected = focusArea === f.id;
                 const IconComp = f.icon;
@@ -490,18 +592,23 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                   <div
                     key={f.id}
                     onClick={() => setFocusArea(f.id)}
-                    className={`p-4 rounded-2xl border cursor-pointer transition flex items-start gap-3.5 ${
+                    className={`p-4 rounded-2xl border-2 cursor-pointer transition flex items-start gap-4 relative overflow-hidden ${
                       isSelected
-                        ? 'bg-[#1e1333] border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
-                        : 'bg-black/40 border-[#d4af37]/20 hover:border-[#d4af37]/40 hover:bg-black/60'
+                        ? 'bg-gradient-to-r from-[#4c0519]/70 to-[#1f062b]/80 border-[#d4af37] shadow-[0_0_20px_rgba(212,175,55,0.35)]'
+                        : 'bg-black/50 border-[#d4af37]/25 hover:border-[#d4af37]/50 hover:bg-black/70'
                     }`}
                   >
-                    <div className={`p-2.5 rounded-xl bg-black/60 border border-[#d4af37]/30 ${f.color}`}>
-                      <IconComp size={20} />
+                    <div className={`p-3 rounded-xl bg-black/70 border border-[#d4af37]/40 ${f.color} shrink-0`}>
+                      <IconComp size={22} />
                     </div>
-                    <div>
-                      <h4 className="font-cinzel font-bold text-sm text-[#fef08a] mb-0.5">{f.label}</h4>
-                      <p className="text-xs text-[#c4b5fd]/80 font-serif leading-relaxed">{f.desc}</p>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <h4 className="font-cinzel font-bold text-sm text-[#fef08a]">{f.label}</h4>
+                        <span className="px-3 py-1 rounded-full text-xs font-cinzel font-bold bg-gradient-to-r from-[#7f1d1d] to-[#b45309] text-[#fef08a] border border-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.4)] shrink-0">
+                          ₹{f.price}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#c4b5fd]/90 font-serif leading-relaxed">{f.desc}</p>
                     </div>
                   </div>
                 );
@@ -510,7 +617,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
 
             <div>
               <label className="block text-xs uppercase tracking-wider text-[#d4af37] font-cinzel font-medium mb-1.5">
-                Personal Intention or Questions for the Reader (Optional)
+                Personal Intention or Questions for Reader Vedant & Anvii (Optional)
               </label>
               <textarea
                 value={notes}
@@ -522,15 +629,18 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
             </div>
           </div>
 
-          {/* Section 4: Seeker Information */}
-          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
+          {/* Section 4: Seeker Identification */}
+          <div className="bg-gradient-to-b from-[#1b0614]/90 via-[#0e0419]/90 to-[#07020e]/95 border-2 border-[#d4af37]/40 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
+            <div className="absolute top-2 left-4 text-[#d4af37]/50 text-sm">❖</div>
+            <div className="absolute top-2 right-4 text-[#d4af37]/50 text-sm">❖</div>
+
             <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2 mb-4">
-              <ShieldCheck size={16} className="text-[#d4af37]" /> 4. Seeker Identity
+              <Sparkles size={16} className="text-[#d4af37]" /> 4. Seeker Details
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-[#c4b5fd] font-cinzel mb-1">
+                <label className="block text-xs uppercase tracking-wider text-[#d4af37] font-cinzel font-medium mb-1">
                   Full Name *
                 </label>
                 <input
@@ -538,13 +648,13 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                   required
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
-                  placeholder="e.g. Maya Chen"
-                  className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/50 focus:outline-none focus:border-[#d4af37] transition text-sm font-serif"
+                  placeholder="e.g. John Doe"
+                  className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/40 font-serif text-sm focus:outline-none focus:border-[#d4af37]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-[#c4b5fd] font-cinzel mb-1">
+                <label className="block text-xs uppercase tracking-wider text-[#d4af37] font-cinzel font-medium mb-1">
                   Email Address *
                 </label>
                 <input
@@ -552,26 +662,24 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
                   required
                   value={clientEmail}
                   onChange={(e) => setClientEmail(e.target.value)}
-                  placeholder="e.g. maya@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/50 focus:outline-none focus:border-[#d4af37] transition text-sm font-serif"
+                  placeholder="e.g. seeker@example.com"
+                  className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/40 font-serif text-sm focus:outline-none focus:border-[#d4af37]"
                 />
               </div>
             </div>
           </div>
 
-          {/* Submit to Payment Button */}
+          {/* Submit & Move to Step 2 Button */}
           <div className="text-center pt-2">
             <button
               type="submit"
-              disabled={!clientName || !clientEmail}
-              className="w-full sm:w-auto px-12 py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_30px_rgba(212,175,55,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 mx-auto hover:scale-105"
+              className="w-full sm:w-auto px-12 py-4 rounded-2xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] hover:from-[#991b1b] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border-2 border-[#d4af37]/80 shadow-[0_0_35px_rgba(212,175,55,0.45)] transition hover:scale-105 active:scale-95 flex items-center justify-center gap-3 mx-auto group"
             >
-              <QrCode size={18} className="text-[#facc15]" />
-              <span>Proceed to Consecrated Payment & QR Verification</span>
-              <ArrowRight size={16} />
+              <span>Proceed to Consecrated Payment (₹{selectedPrice})</span>
+              <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform" />
             </button>
-            <p className="text-[12px] text-[#e2d5b8]/70 font-cinzel tracking-wider mt-3">
-              🔒 Strict Reader Approval Policy • Only approved seekers enter the sanctuary
+            <p className="text-xs text-[#c4b5fd]/70 font-cinzel mt-2 tracking-wider">
+              Step 1 of 2 • Slot Reserved for 15 Minutes
             </p>
           </div>
         </form>

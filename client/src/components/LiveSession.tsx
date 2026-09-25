@@ -397,39 +397,40 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-[#080611] text-purple-100 flex flex-col relative select-none overflow-x-hidden">
-      {/* Mystical Background Stars & Ambient Aura */}
+    <div className="min-h-screen bg-[#05020a] text-[#eedec5] flex flex-col relative select-none overflow-x-hidden font-serif">
+      {/* Mystical Vampire / Hogwarts Atmospheric Background Aura */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-900/15 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute inset-0 bg-[radial-gradient(#a855f7_0.6px,transparent_0.6px)] [background-size:24px_24px] opacity-15" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#4c0519]/20 rounded-full blur-[140px]" />
+        <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-[#3b0764]/20 rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#d4af37]/5 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.5px,transparent_0.5px)] [background-size:28px_28px] opacity-10" />
       </div>
 
       {/* ================= TOP NAVIGATION / STATUS BAR ================= */}
-      <header className="relative z-20 border-b border-purple-500/20 bg-[#0d091a]/80 backdrop-blur-md px-4 py-3">
+      <header className="relative z-20 border-b-2 border-[#d4af37]/40 bg-[#090312]/95 backdrop-blur-md px-4 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.85)]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           {/* Sanctuary Brand & Focus */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-purple-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
-              <Sparkles size={18} className="text-amber-200 animate-pulse" />
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#7f1d1d] via-[#4c0519] to-[#120208] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+              <span className="text-lg text-[#f3e5ab] drop-shadow">🜂</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-serif font-bold text-amber-200 tracking-wide text-base">
+                <span className="font-gothic-title font-bold text-[#fef08a] tracking-wide text-base">
                   Live Tarot Sanctuary
                 </span>
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-purple-900/60 border border-purple-500/30 text-purple-300">
+                <span className="text-[11px] font-cinzel px-2.5 py-0.5 rounded-full bg-black/60 border border-[#d4af37]/40 text-[#c4b5fd]">
                   Room: {sessionId.slice(0, 12)}
                 </span>
               </div>
-              <div className="text-xs text-purple-400">
-                Seeker: <strong className="text-purple-200">{session?.clientName || userName}</strong> • Focus: <span className="text-amber-300 font-medium">{session?.readingFocus}</span>
+              <div className="text-xs text-[#c4b5fd]">
+                Seeker: <strong className="text-[#fef08a]">{session?.clientName || userName}</strong> • Focus: <span className="text-[#fde047] font-cinzel font-semibold">{session?.readingFocus}</span>
               </div>
             </div>
           </div>
 
           {/* Stepper Bar (1 to 7) */}
-          <div className="hidden lg:flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-full border border-purple-500/20 text-xs">
+          <div className="hidden lg:flex items-center gap-1.5 bg-black/70 px-3 py-1.5 rounded-full border border-[#d4af37]/35 text-xs shadow-inner">
             {['Connect', 'Shuffle', 'Spread', 'Select', 'Reveal', 'Interpret', 'Summary'].map((stepName, i) => {
               const stepNumber = i + 1;
               const isPast = currentStep > stepNumber;
@@ -438,17 +439,17 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
               return (
                 <div key={stepName} className="flex items-center">
                   <span
-                    className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition ${
+                    className={`px-3 py-1 rounded-full text-[11px] font-cinzel font-semibold tracking-wider transition ${
                       isCurrent
-                        ? 'bg-amber-500 text-purple-950 font-bold shadow-md shadow-amber-500/30'
+                        ? 'bg-gradient-to-r from-[#7f1d1d] to-[#b45309] text-[#fef08a] font-bold border border-[#d4af37] shadow-[0_0_12px_rgba(212,175,55,0.45)]'
                         : isPast
-                        ? 'bg-purple-900/40 text-purple-300'
-                        : 'text-purple-500 opacity-60'
+                        ? 'bg-[#1b0826]/80 text-[#eedec5] border border-[#d4af37]/25'
+                        : 'text-[#9ca3af]/60 opacity-60'
                     }`}
                   >
                     {stepNumber}. {stepName}
                   </span>
-                  {i < 6 && <ChevronRight size={12} className="text-purple-600 mx-0.5" />}
+                  {i < 6 && <ChevronRight size={12} className="text-[#d4af37]/50 mx-0.5" />}
                 </div>
               );
             })}

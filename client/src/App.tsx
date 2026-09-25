@@ -67,23 +67,26 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#07050d] text-[#eedec5] flex flex-col font-serif selection:bg-amber-700/40 selection:text-[#fef08a] relative overflow-x-hidden">
-      {/* Hogwarts / Gothic Floating Embers & Candlelight Background */}
+    <div className="min-h-screen bg-[#05020a] text-[#eedec5] flex flex-col font-serif selection:bg-[#7f1d1d]/60 selection:text-[#fef08a] relative overflow-x-hidden">
+      {/* Hogwarts / Vampire Gothic Cinematic Background with Embers & Mystical Fog */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Deep Gothic Haze */}
-        <div className="absolute top-[-15%] left-[20%] w-[650px] h-[650px] bg-purple-950/20 rounded-full blur-[160px]" />
-        <div className="absolute bottom-[-10%] right-[15%] w-[650px] h-[650px] bg-amber-900/15 rounded-full blur-[160px]" />
-        <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[500px] h-[500px] bg-[#d4af37]/5 rounded-full blur-[140px]" />
+        {/* Vampire Blood Crimson Haze */}
+        <div className="absolute top-[-15%] left-[15%] w-[700px] h-[700px] bg-[#4c0519]/25 rounded-full blur-[160px]" />
+        {/* Dark Occult Purple Fog */}
+        <div className="absolute bottom-[-10%] right-[10%] w-[700px] h-[700px] bg-[#3b0764]/25 rounded-full blur-[170px]" />
+        {/* Antique Gold Center Candlelight */}
+        <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[550px] h-[550px] bg-[#d4af37]/8 rounded-full blur-[150px]" />
 
         {/* Ambient Floating Embers */}
-        <div className="absolute top-[20%] left-[10%] w-1.5 h-1.5 rounded-full bg-amber-400/50 blur-[0.5px] animate-ember" style={{ animationDelay: '0s' }} />
-        <div className="absolute top-[65%] left-[85%] w-2 h-2 rounded-full bg-orange-400/40 blur-[0.5px] animate-ember" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-[80%] left-[25%] w-1 h-1 rounded-full bg-amber-300/60 blur-[0.5px] animate-ember" style={{ animationDelay: '3.5s' }} />
-        <div className="absolute top-[35%] right-[20%] w-1.5 h-1.5 rounded-full bg-amber-500/50 blur-[0.5px] animate-ember" style={{ animationDelay: '1.2s' }} />
+        <div className="absolute top-[20%] left-[10%] w-1.5 h-1.5 rounded-full bg-amber-400/60 blur-[0.5px] animate-ember" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-[65%] left-[85%] w-2 h-2 rounded-full bg-rose-500/50 blur-[0.5px] animate-ember" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[80%] left-[25%] w-1.5 h-1.5 rounded-full bg-amber-300/70 blur-[0.5px] animate-ember" style={{ animationDelay: '3.5s' }} />
+        <div className="absolute top-[35%] right-[20%] w-2 h-2 rounded-full bg-orange-500/50 blur-[0.5px] animate-ember" style={{ animationDelay: '1.2s' }} />
+        <div className="absolute top-[50%] left-[45%] w-1 h-1 rounded-full bg-amber-200/80 blur-[0.5px] animate-ember" style={{ animationDelay: '4.5s' }} />
       </div>
 
       {/* Main Gothic Top Header */}
-      <header className="relative z-20 border-b border-[#d4af37]/30 bg-[#0d0818]/90 backdrop-blur-md px-4 sm:px-8 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+      <header className="relative z-20 border-b-2 border-[#d4af37]/40 bg-[#090312]/95 backdrop-blur-md px-4 sm:px-8 py-4 shadow-[0_4px_35px_rgba(0,0,0,0.85)]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Logo & Brand Identity */}
           <div
@@ -94,21 +97,21 @@ export function App() {
             className="flex items-center gap-3.5 cursor-pointer group"
           >
             {/* Wax Seal / Mystic Crest */}
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#9a3412] via-[#581c87] to-[#1c1917] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)] group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] transition-all duration-300">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7f1d1d] via-[#4c0519] to-[#120208] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_25px_rgba(212,175,55,0.45)] group-hover:scale-105 group-hover:shadow-[0_0_35px_rgba(212,175,55,0.7)] transition-all duration-300">
               <span className="text-xl text-[#f3e5ab] drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]">🜂</span>
             </div>
             <div>
-              <div className="font-gothic-title font-bold text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#e2d5b8] to-[#d4af37] drop-shadow">
+              <div className="font-gothic-title font-bold text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37] drop-shadow-[0_2px_10px_rgba(212,175,55,0.5)]">
                 LIVE TAROT
               </div>
-              <div className="text-[11px] tracking-widest text-[#d4af37]/80 uppercase font-cinzel font-medium">
+              <div className="text-[11px] tracking-widest text-[#d4af37]/90 uppercase font-cinzel font-medium">
                 The Mystic Arcana Sanctuary
               </div>
             </div>
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/60 border border-[#d4af37]/35 shadow-inner">
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/70 border border-[#d4af37]/40 shadow-inner">
             <button
               onClick={() => {
                 setActiveView('booking');
@@ -116,8 +119,8 @@ export function App() {
               }}
               className={`px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeView === 'booking'
-                  ? 'bg-gradient-to-r from-[#b45309] to-[#d97706] text-[#0f0a1c] shadow-[0_0_15px_rgba(217,119,6,0.5)]'
-                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-purple-950/40'
+                  ? 'bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] text-[#fef08a] border border-[#d4af37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-black/50'
               }`}
             >
               <Calendar size={14} />
@@ -128,8 +131,8 @@ export function App() {
               onClick={() => setActiveView('admin')}
               className={`px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeView === 'admin'
-                  ? 'bg-gradient-to-r from-[#b45309] to-[#d97706] text-[#0f0a1c] shadow-[0_0_15px_rgba(217,119,6,0.5)]'
-                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-purple-950/40'
+                  ? 'bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] text-[#fef08a] border border-[#d4af37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
+                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-black/50'
               }`}
             >
               <Shield size={14} />
@@ -155,7 +158,7 @@ export function App() {
       </main>
 
       {/* Gothic Mystical Footer with Founders Brand */}
-      <footer className="relative z-10 border-t border-[#d4af37]/30 bg-[#090514] py-8 px-4 text-[#e2d5b8]/80 shadow-[0_-10px_30px_rgba(0,0,0,0.8)]">
+      <footer className="relative z-10 border-t-2 border-[#d4af37]/40 bg-[#07010e] py-8 px-4 text-[#e2d5b8]/80 shadow-[0_-10px_35px_rgba(0,0,0,0.85)]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           {/* Brand & Founders Identification */}
           <div className="space-y-1.5">
