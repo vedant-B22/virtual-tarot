@@ -20,7 +20,21 @@ app.use(cors({
   methods: ['GET', 'POST', 'PATCH', 'DELETE']
 }));
 
-app.use(express.json());
+// Generous body limit for payment screenshot uploads
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ limit: '25mb', extended: true }));
+
+// Socket.io configuration
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  },
+  pingTimeout: 60000,
+  pingInterval: 25000
+});
+
+app.set('io', io);
 
 // API Routes
 app.use('/api', apiRoutes);
@@ -42,22 +56,12 @@ if (fs.existsSync(clientDistPath)) {
   });
 }
 
-// Socket.io configuration
-const io = new Server(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  },
-  pingTimeout: 60000,
-  pingInterval: 25000
-});
-
 setupSocketHandlers(io);
 
 server.listen(PORT, () => {
   console.log(`===============================================`);
   console.log(`✨ Live Tarot Server running on http://localhost:${PORT}`);
   console.log(`🔮 WebSocket server active`);
-  console.log(`🔑 Admin password: ${process.env.ADMIN_PASSWORD || 'tarot2026'}`);
+  console.log(`🔑 Admin password active`);
   console.log(`===============================================`);
 });

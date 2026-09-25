@@ -66,7 +66,11 @@ export interface Booking {
   timezone: string;
   focus: string;
   notes?: string;
-  status: 'confirmed' | 'rescheduled' | 'cancelled' | 'completed';
+  status: 'pending_approval' | 'approved' | 'confirmed' | 'rescheduled' | 'cancelled' | 'completed';
+  isApproved?: boolean;
+  paymentScreenshot?: string | null;
+  transactionRef?: string;
+  approvedAt?: string;
   createdAt: string;
   updatedAt?: string;
 }

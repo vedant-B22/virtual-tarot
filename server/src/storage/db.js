@@ -10,36 +10,9 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Initial state template
+// Initial state template (Empty bookings for clean real environment)
 const initialData = {
-  bookings: [
-    {
-      id: "booking-demo-01",
-      sessionId: "sanctuary-demo-session",
-      clientName: "Elena Vance",
-      clientEmail: "elena.vance@example.com",
-      date: new Date().toISOString().split('T')[0],
-      timeSlot: "03:30 PM",
-      timezone: "America/New_York (EST)",
-      focus: "Career & Finances",
-      notes: "Contemplating a pivot toward creative entrepreneurship. Seeking guidance on timing.",
-      status: "confirmed",
-      createdAt: new Date(Date.now() - 3600000 * 24).toISOString()
-    },
-    {
-      id: "booking-demo-02",
-      sessionId: "mystic-arcana-live",
-      clientName: "Marcus Sterling",
-      clientEmail: "marcus.s@example.com",
-      date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-      timeSlot: "05:00 PM",
-      timezone: "Europe/London (GMT)",
-      focus: "Love & Relationships",
-      notes: "Looking for clarity around an old connection resurfacing.",
-      status: "confirmed",
-      createdAt: new Date(Date.now() - 3600000 * 12).toISOString()
-    }
-  ],
+  bookings: [],
   sessions: {},
   emailLogs: []
 };
@@ -85,7 +58,7 @@ const db = {
 
   createBooking: (bookingData) => {
     const data = readDb();
-    const sessionId = `tarot-${uuidv4().slice(0, 8)}`;
+    const sessionId = `sanctuary-${uuidv4().slice(0, 8)}`;
     const newBooking = {
       id: `booking-${uuidv4().slice(0, 8)}`,
       sessionId,
@@ -96,7 +69,10 @@ const db = {
       timezone: bookingData.timezone || "Local Time",
       focus: bookingData.focus || "General Guidance",
       notes: bookingData.notes || "",
-      status: "confirmed",
+      status: "pending_approval", // Strict gate: client cannot enter until reader approves!
+      isApproved: false,
+      paymentScreenshot: bookingData.paymentScreenshot || null,
+      transactionRef: bookingData.transactionRef || "",
       createdAt: new Date().toISOString()
     };
 
@@ -104,6 +80,18 @@ const db = {
     data.bookings.unshift(newBooking);
     writeDb(data);
     return newBooking;
+  },
+
+  approveBooking: (id) => {
+    const data = readDb();
+    const booking = (data.bookings || []).find(b => b.id === id);
+    if (!booking) return null;
+
+    booking.status = "approved";
+    booking.isApproved = true;
+    booking.approvedAt = new Date().toISOString();
+    writeDb(data);
+    return booking;
   },
 
   updateBooking: (id, updates) => {
@@ -144,25 +132,6 @@ const db = {
     };
     writeDb(data);
     return data.sessions[sessionId];
-  },
-
-  logEmail: (emailRecord) => {
-    const data = readDb();
-    if (!data.emailLogs) data.emailLogs = [];
-    data.emailLogs.unshift({
-      id: `email-${Date.now()}`,
-      ...emailRecord,
-      timestamp: new Date().toISOString()
-    });
-    if (data.emailLogs.length > 50) {
-      data.emailLogs = data.emailLogs.slice(0, 50);
-    }
-    writeDb(data);
-  },
-
-  getEmailLogs: () => {
-    const data = readDb();
-    return data.emailLogs || [];
   }
 };
 

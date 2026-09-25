@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../storage/db');
 const tarotCards = require('../data/tarotDeck.json');
-const { sendBookingConfirmation } = require('../services/emailService');
 
 // Middleware for Admin Authentication
 const requireAdmin = (req, res, next) => {
@@ -28,7 +27,7 @@ router.post('/admin/login', (req, res) => {
     });
   }
 
-  return res.status(401).json({ success: false, error: 'Incorrect password' });
+  return res.status(401).json({ success: false, error: 'Incorrect sanctuary key' });
 });
 
 // Admin Auth Status Check
@@ -57,16 +56,16 @@ router.get('/cards/:id', (req, res) => {
   res.json(card);
 });
 
-// Get Bookings
-router.get('/bookings', (req, res) => {
+// Get Bookings (Admin)
+router.get('/bookings', requireAdmin, (req, res) => {
   const bookings = db.getBookings();
   res.json({ bookings });
 });
 
-// Create Booking
+// Create Booking with Payment Screenshot & Verification
 router.post('/bookings', async (req, res) => {
   try {
-    const { clientName, clientEmail, date, timeSlot, timezone, focus, notes } = req.body;
+    const { clientName, clientEmail, date, timeSlot, timezone, focus, notes, paymentScreenshot, transactionRef } = req.body;
 
     if (!clientName || !clientEmail || !date || !timeSlot) {
       return res.status(400).json({ error: 'Missing required booking fields (name, email, date, timeSlot)' });
@@ -79,21 +78,15 @@ router.post('/bookings', async (req, res) => {
       timeSlot,
       timezone,
       focus,
-      notes
+      notes,
+      paymentScreenshot,
+      transactionRef
     });
-
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const baseUrl = `${protocol}://${host.replace(/:\d+$/, ':5173')}`;
-
-    // Send confirmation email / log preview
-    const emailResult = await sendBookingConfirmation({ booking, baseUrl });
 
     res.status(201).json({
       success: true,
       booking,
-      sessionUrl: `/session/${booking.sessionId}`,
-      emailResult
+      sessionUrl: `/session/${booking.sessionId}`
     });
   } catch (err) {
     console.error('Error creating booking:', err);
@@ -101,11 +94,51 @@ router.post('/bookings', async (req, res) => {
   }
 });
 
+// Check Session Approval Status (Client Waiting Lobby)
+router.get('/bookings/status/:sessionId', (req, res) => {
+  const booking = db.getBookingBySessionId(req.params.sessionId);
+  if (!booking) {
+    // If no booking found, check if direct session exists
+    return res.json({ exists: false, isApproved: false, status: 'not_found' });
+  }
+
+  res.json({
+    exists: true,
+    isApproved: Boolean(booking.isApproved),
+    status: booking.status,
+    clientName: booking.clientName,
+    date: booking.date,
+    timeSlot: booking.timeSlot,
+    focus: booking.focus
+  });
+});
+
+// Approve Booking (Reader strictly unlocks the room)
+router.patch('/bookings/:id/approve', requireAdmin, (req, res) => {
+  const approved = db.approveBooking(req.params.id);
+  if (!approved) {
+    return res.status(404).json({ error: 'Booking not found' });
+  }
+
+  // Notify socket room that approval has been granted!
+  const io = req.app.get('io');
+  if (io && approved.sessionId) {
+    io.to(approved.sessionId).emit('approval_granted', {
+      sessionId: approved.sessionId,
+      status: 'approved',
+      isApproved: true
+    });
+  }
+
+  res.json({ success: true, booking: approved });
+});
+
 // Update Booking Status / Slot
 router.patch('/bookings/:id', requireAdmin, (req, res) => {
-  const { status, date, timeSlot, notes } = req.body;
+  const { status, date, timeSlot, notes, isApproved } = req.body;
   const updated = db.updateBooking(req.params.id, {
     ...(status && { status }),
+    ...(isApproved !== undefined && { isApproved }),
     ...(date && { date }),
     ...(timeSlot && { timeSlot }),
     ...(notes !== undefined && { notes })
@@ -113,6 +146,15 @@ router.patch('/bookings/:id', requireAdmin, (req, res) => {
 
   if (!updated) {
     return res.status(404).json({ error: 'Booking not found' });
+  }
+
+  const io = req.app.get('io');
+  if (io && updated.sessionId && isApproved) {
+    io.to(updated.sessionId).emit('approval_granted', {
+      sessionId: updated.sessionId,
+      status: updated.status,
+      isApproved: true
+    });
   }
 
   res.json({ success: true, booking: updated });
@@ -140,21 +182,12 @@ router.get('/sessions/:sessionId', (req, res) => {
   });
 });
 
-// Email Preview Logs (for testing and admin visibility)
-router.get('/emails', requireAdmin, (req, res) => {
-  const logs = db.getEmailLogs();
-  res.json({ emails: logs });
-});
-
-// System Config Info
+// Config Info
 router.get('/config', (req, res) => {
   res.json({
-    adminPasswordConfigured: Boolean(process.env.ADMIN_PASSWORD),
-    smtpConfigured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER),
-    videoProvider: process.env.VIDEO_PROVIDER || 'webrtc_p2p',
-    dailyDomain: process.env.DAILY_DOMAIN || null,
-    appName: "Live Tarot Sanctuary",
-    version: "1.0.0"
+    appName: "The Mystic Arcana Sanctuary",
+    founders: ["Vedant Baviskar", "Anvii Panchal"],
+    version: "2.0.0"
   });
 });
 

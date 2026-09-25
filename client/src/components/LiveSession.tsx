@@ -24,7 +24,9 @@ import {
   Flame,
   Heart,
   Briefcase,
-  Compass
+  Compass,
+  Lock,
+  RefreshCw
 } from 'lucide-react';
 
 interface LiveSessionProps {
@@ -42,11 +44,15 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
   userName = 'Seeker',
   onExitSession
 }) => {
-  const [role, setRole] = useState<'admin' | 'client'>(initialRole);
+  const [role] = useState<'admin' | 'client'>(initialRole);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [session, setSession] = useState<SessionState | null>(null);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [systemAlert, setSystemAlert] = useState<string | null>(null);
+  const [isApproved, setIsApproved] = useState<boolean>(initialRole === 'admin');
+  const [approvalChecked, setApprovalChecked] = useState<boolean>(initialRole === 'admin');
+  const [bookingDetails, setBookingDetails] = useState<{ clientName?: string; focus?: string; date?: string; timeSlot?: string } | null>(null);
+  const [checkingStatus, setCheckingStatus] = useState<boolean>(false);
   const [localNotes, setLocalNotes] = useState({
     life: '',
     love: '',
@@ -102,6 +108,19 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
       });
     });
 
+    s.on('approval_granted', (payload: { sessionId?: string; isApproved?: boolean }) => {
+      if (!payload?.sessionId || payload.sessionId === sessionId) {
+        setIsApproved(true);
+        audioEngine.playChime(659);
+        confetti({
+          particleCount: 50,
+          spread: 70,
+          origin: { y: 0.5 },
+          colors: ['#facc15', '#a855f7', '#10b981']
+        });
+      }
+    });
+
     s.on('notes_updated', ({ field, text }: { field: 'life' | 'love' | 'career' | 'summary'; text: string }) => {
       setLocalNotes((prev) => ({ ...prev, [field]: text }));
     });
@@ -112,6 +131,48 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
       s.disconnect();
     };
   }, [sessionId, role, userName]);
+
+  // Strict Approval Verification check for clients
+  const checkApprovalStatus = async () => {
+    setCheckingStatus(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/bookings/status/${sessionId}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.exists) {
+          setIsApproved(Boolean(data.isApproved));
+          setBookingDetails(data);
+        } else {
+          // Direct room without pre-booking
+          setIsApproved(true);
+        }
+      }
+    } catch (err) {
+      console.error('Error verifying approval status:', err);
+    } finally {
+      setApprovalChecked(true);
+      setCheckingStatus(false);
+    }
+  };
+
+  useEffect(() => {
+    if (role === 'admin') {
+      setIsApproved(true);
+      setApprovalChecked(true);
+      return;
+    }
+
+    checkApprovalStatus();
+
+    // Polling every 3.5s while pending approval
+    const interval = setInterval(() => {
+      if (!isApproved) {
+        checkApprovalStatus();
+      }
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [sessionId, role, isApproved]);
 
   // Breathing cycle animation timer for Step 1
   useEffect(() => {
@@ -200,6 +261,141 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
     ? Boolean(session?.participants?.client?.online)
     : Boolean(session?.participants?.admin?.online);
 
+  // ================= STRICT APPROVAL GATE FOR CLIENT =================
+  if (role === 'client' && approvalChecked && !isApproved) {
+    return (
+      <div className="min-h-screen bg-[#07050d] text-[#eedec5] flex flex-col justify-between relative overflow-hidden font-serif selection:bg-amber-700/40">
+        {/* Hogwarts / Gothic Floating Embers Background */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] bg-purple-950/25 rounded-full blur-[140px]" />
+          <div className="absolute bottom-[-10%] right-[15%] w-[600px] h-[600px] bg-amber-900/20 rounded-full blur-[140px]" />
+          <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[450px] h-[450px] bg-[#d4af37]/5 rounded-full blur-[120px]" />
+          <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 rounded-full bg-amber-400/60 blur-[0.5px] animate-ember" />
+          <div className="absolute top-[60%] left-[80%] w-2 h-2 rounded-full bg-orange-400/50 blur-[0.5px] animate-ember" style={{ animationDelay: '2s' }} />
+        </div>
+
+        {/* Waiting Lobby Header */}
+        <header className="relative z-20 border-b border-[#d4af37]/30 bg-[#0d0818]/90 backdrop-blur-md px-6 py-4">
+          <div className="max-w-5xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#9a3412] via-[#581c87] to-[#1c1917] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                <span className="text-lg text-[#f3e5ab]">🜂</span>
+              </div>
+              <div>
+                <span className="font-gothic-title font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#e2d5b8] to-[#d4af37]">
+                  LIVE TAROT SANCTUARY
+                </span>
+                <div className="text-[10px] tracking-widest text-[#d4af37]/80 uppercase font-cinzel">
+                  Chamber Portal: {sessionId.slice(0, 12)}
+                </div>
+              </div>
+            </div>
+
+            {onExitSession && (
+              <button
+                onClick={onExitSession}
+                className="px-4 py-2 rounded-xl bg-black/60 text-[#c4b5fd] hover:text-[#fef08a] border border-[#d4af37]/30 text-xs font-cinzel transition"
+              >
+                Exit Sanctuary
+              </button>
+            )}
+          </div>
+        </header>
+
+        {/* Main Sealed Gates Card */}
+        <main className="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="max-w-xl w-full bg-gradient-to-b from-[#1b1030] via-[#110920] to-[#07040d] border-2 border-[#d4af37]/70 rounded-3xl p-8 sm:p-12 shadow-[0_0_60px_rgba(212,175,55,0.25)] text-center relative overflow-hidden"
+          >
+            {/* Ornate corner filigree */}
+            <div className="absolute top-3 left-4 text-[#d4af37]/60 text-sm">❖</div>
+            <div className="absolute top-3 right-4 text-[#d4af37]/60 text-sm">❖</div>
+            <div className="absolute bottom-3 left-4 text-[#d4af37]/60 text-sm">❖</div>
+            <div className="absolute bottom-3 right-4 text-[#d4af37]/60 text-sm">❖</div>
+
+            {/* Glowing Lock Rune */}
+            <div className="relative w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#d4af37]/50 animate-spin-slow" />
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7c2d12] via-[#581c87] to-[#1c1917] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.5)]">
+                <Lock size={36} className="text-[#fde047] drop-shadow-[0_0_10px_rgba(250,204,21,0.8)] animate-pulse" />
+              </div>
+            </div>
+
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/60 border border-[#d4af37]/50 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-3 shadow-inner">
+              <Sparkles size={12} className="text-[#facc15] animate-pulse" />
+              <span>Sanctuary Chamber Sealed</span>
+              <Sparkles size={12} className="text-[#facc15] animate-pulse" />
+            </div>
+
+            <h1 className="text-2xl sm:text-4xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37] mb-3">
+              Awaiting Reader Blessing
+            </h1>
+
+            <p className="text-sm text-[#eedec5]/90 font-serif leading-relaxed mb-6">
+              Greetings, <strong className="text-[#fef08a]">{bookingDetails?.clientName || userName}</strong>. Your reading slot and payment verification screenshot have been presented to{' '}
+              <strong className="text-[#fef08a] font-cinzel">Founder Vedant Baviskar</strong> &{' '}
+              <strong className="text-[#fef08a] font-cinzel">Co-Founder Anvii Panchal</strong>.
+              <br /><br />
+              Once the Sanctuary Master confirms your offering in the Reader Sanctum, these gates will part immediately. Please keep this portal open.
+            </p>
+
+            {/* Booking Details Pill */}
+            {bookingDetails && (
+              <div className="bg-black/60 border border-[#d4af37]/35 rounded-2xl p-4 mb-6 text-left space-y-2 text-xs font-serif">
+                <div className="flex justify-between items-center pb-1.5 border-b border-[#d4af37]/20">
+                  <span className="text-[#c4b5fd] font-cinzel">Inquiry Focus:</span>
+                  <span className="font-bold text-[#fde047]">{bookingDetails.focus || 'Life & Destiny'}</span>
+                </div>
+                {bookingDetails.date && (
+                  <div className="flex justify-between items-center text-[#c4b5fd]">
+                    <span className="font-cinzel">Reserved Time:</span>
+                    <span className="font-medium text-[#fef08a]">{bookingDetails.date} at {bookingDetails.timeSlot}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Live Indicator */}
+            <div className="p-3.5 rounded-2xl bg-black/70 border border-[#d4af37]/40 mb-6 flex items-center justify-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+              <span className="text-xs font-cinzel tracking-wider text-[#fde047]">
+                Live Status: Waiting for Sanctuary Reader Approval...
+              </span>
+            </div>
+
+            {/* Controls */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <button
+                onClick={checkApprovalStatus}
+                disabled={checkingStatus}
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-[#b45309] via-[#d97706] to-[#b45309] hover:brightness-110 text-black font-cinzel font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(217,119,6,0.4)] transition disabled:opacity-50"
+              >
+                <RefreshCw size={14} className={checkingStatus ? 'animate-spin' : ''} />
+                <span>Check Sanctuary Gate</span>
+              </button>
+
+              {onExitSession && (
+                <button
+                  onClick={onExitSession}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black/60 hover:bg-black/80 text-[#c4b5fd] hover:text-[#fef08a] border border-[#d4af37]/30 text-xs font-cinzel transition"
+                >
+                  Exit Sanctuary
+                </button>
+              )}
+            </div>
+          </motion.div>
+        </main>
+
+        {/* Footer */}
+        <footer className="relative z-10 border-t border-[#d4af37]/25 bg-[#090514] py-4 px-4 text-center text-xs text-[#c4b5fd]/70 font-cinzel">
+          Protected under the Sacred Arcana Order • Founder Vedant Baviskar & Co-Founder Anvii Panchal
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#080611] text-purple-100 flex flex-col relative select-none overflow-x-hidden">
       {/* Mystical Background Stars & Ambient Aura */}
@@ -283,17 +479,10 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
               <span className="text-[11px] text-purple-300">Seeker</span>
             </div>
 
-            {/* Test Role Switcher */}
-            <button
-              onClick={() => {
-                const nextRole = role === 'admin' ? 'client' : 'admin';
-                setRole(nextRole);
-              }}
-              className="px-2.5 py-1.5 rounded-xl bg-purple-900/40 hover:bg-purple-800/60 text-purple-300 border border-purple-500/30 text-xs font-medium transition"
-              title="Switch role for demo testing"
-            >
-              View: <strong className="text-amber-300">{role === 'admin' ? 'Reader' : 'Seeker'}</strong>
-            </button>
+            {/* Sanctuary Role Badge */}
+            <div className="px-2.5 py-1.5 rounded-xl bg-purple-900/40 text-purple-300 border border-purple-500/30 text-xs font-medium">
+              Role: <strong className="text-amber-300">{role === 'admin' ? 'Reader' : 'Seeker'}</strong>
+            </div>
 
             {onExitSession && (
               <button
@@ -753,9 +942,15 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
                       <div className="text-[11px] text-amber-300 font-medium">
                         {picked?.orientation === 'reversed' ? 'Reversed' : 'Upright'}
                       </div>
-                      <div className="text-[10px] text-purple-400 mt-1 line-clamp-1">
-                        {cardData?.keywords?.slice(0, 3).join(', ')}
-                      </div>
+                      {role === 'admin' ? (
+                        <div className="text-[10px] text-purple-400 mt-1 line-clamp-1">
+                          {cardData?.keywords?.slice(0, 3).join(', ')}
+                        </div>
+                      ) : (
+                        <div className="text-[10px] text-purple-400/60 mt-1 italic">
+                          Archetype in {category} Position
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -798,8 +993,8 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
                 )}
               </div>
 
-              {/* Card Reference details for currently active tab */}
-              {activeNoteTab !== 'summary' && (() => {
+              {/* Reader Grimoire Cheat Sheet (Strictly Reader Only) */}
+              {role === 'admin' && activeNoteTab !== 'summary' && (() => {
                 const picked = session?.selectedCards?.find((c) => c.category.toLowerCase() === activeNoteTab);
                 const cardData = picked ? getCardDetails(picked.cardId) : null;
                 const isReversed = picked?.orientation === 'reversed';
@@ -815,6 +1010,24 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
                     <p className="text-purple-300/90 leading-relaxed text-[12px]">
                       {isReversed ? cardData?.reversed : cardData?.upright}
                     </p>
+                  </div>
+                );
+              })()}
+
+              {/* Client Status Banner without any card clues */}
+              {role === 'client' && activeNoteTab !== 'summary' && (() => {
+                const picked = session?.selectedCards?.find((c) => c.category.toLowerCase() === activeNoteTab);
+                const cardData = picked ? getCardDetails(picked.cardId) : null;
+                const isReversed = picked?.orientation === 'reversed';
+
+                return (
+                  <div className="bg-purple-950/20 border border-purple-500/20 rounded-xl p-3 mb-4 text-xs text-purple-300 flex items-center justify-between">
+                    <span className="font-serif text-amber-200">
+                      Channeling {activeNoteTab.toUpperCase()} Archetype: <strong>{cardData?.name}</strong> ({isReversed ? 'Reversed' : 'Upright'})
+                    </span>
+                    <span className="text-[11px] text-purple-400 italic">
+                      Live channeled reading in progress
+                    </span>
                   </div>
                 );
               })()}
@@ -921,9 +1134,11 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
                         <div className="font-semibold text-purple-100 mb-1 text-center font-serif text-sm">
                           {cardData?.name} ({isReversed ? 'Reversed' : 'Upright'})
                         </div>
-                        <p className="text-purple-300/80 text-[11px] mb-2 text-center">
-                          {cardData?.keywords?.join(', ')}
-                        </p>
+                        {role === 'admin' && (
+                          <p className="text-purple-300/80 text-[11px] mb-2 text-center">
+                            {cardData?.keywords?.join(', ')}
+                          </p>
+                        )}
                         {noteContent && (
                           <div className="bg-black/30 p-2.5 rounded-lg border border-purple-500/20 text-[11px] font-serif text-purple-200 whitespace-pre-wrap">
                             {noteContent}

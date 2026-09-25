@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, Clock, Globe, Sparkles, CheckCircle2, Copy, ArrowRight, Heart, Briefcase, Compass, Sun, ShieldCheck, Flame } from 'lucide-react';
-
+import { Calendar as CalendarIcon, Clock, Globe, Sparkles, Copy, ArrowRight, Heart, Briefcase, Compass, Sun, ShieldCheck, Upload, QrCode, Shield } from 'lucide-react';
+import { FoundersBanner } from './FoundersBanner';
 import { BACKEND_URL } from '../utils/apiConfig';
 
 interface BookingCalendarProps {
@@ -20,13 +20,13 @@ const TIME_SLOTS = [
 
 const FOCUS_AREAS = [
   { id: "Life & Destiny", label: "Life & Destiny", desc: "Clarity on life path, personal growth & inner energy", icon: Compass, color: "text-emerald-400" },
-  { id: "Love & Relationships", label: "Love & Relationships", desc: "Soul connections, heart healing & relational alignment", icon: Heart, color: "text-pink-400" },
+  { id: "Love & Sacred Union", label: "Love & Sacred Union", desc: "Soul connections, heart healing & relational alignment", icon: Heart, color: "text-pink-400" },
   { id: "Career & Prosperity", label: "Career & Prosperity", desc: "Work decisions, financial expansion & creative projects", icon: Briefcase, color: "text-amber-400" },
   { id: "Spiritual Awakening", label: "Spiritual Awakening", desc: "Higher guidance, intuition, shadow work & karmic lessons", icon: Sun, color: "text-purple-400" }
 ];
 
 export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession }) => {
-  // Generate next 14 available dates
+  const [bookingStep, setBookingStep] = useState<'details' | 'payment' | 'completed'>('details');
   const [availableDates, setAvailableDates] = useState<Array<{ dateStr: string; dayName: string; dayNumber: string; monthName: string }>>([]);
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTime, setSelectedTime] = useState<string>('04:00 PM');
@@ -36,8 +36,14 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
   const [focusArea, setFocusArea] = useState<string>('Life & Destiny');
   const [notes, setNotes] = useState<string>('');
 
+  // Payment State
+  const [paymentScreenshot, setPaymentScreenshot] = useState<string | null>(null);
+  const [transactionRef, setTransactionRef] = useState<string>('');
+  const [copiedUpi, setCopiedUpi] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [confirmedBooking, setConfirmedBooking] = useState<{
+
+  // Result state
+  const [createdBooking, setCreatedBooking] = useState<{
     id: string;
     sessionId: string;
     clientName: string;
@@ -46,12 +52,12 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
     timeSlot: string;
     timezone: string;
     focus: string;
+    status: string;
   } | null>(null);
 
   const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
-    // Detect local timezone
     try {
       const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       setTimezone(userTz || 'UTC');
@@ -59,7 +65,6 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
       setTimezone('UTC');
     }
 
-    // Generate upcoming dates
     const dates = [];
     const now = new Date();
     for (let i = 0; i < 14; i++) {
@@ -77,9 +82,40 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
     }
   }, []);
 
-  const handleBookingSubmit = async (e: React.FormEvent) => {
+  // Step 1: Validate details and move to payment QR
+  const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!clientName || !clientEmail || !selectedDate || !selectedTime) return;
+    if (!clientName || !clientEmail || !selectedDate || !selectedTime) {
+      alert('Please fill all required seeker fields.');
+      return;
+    }
+    setBookingStep('payment');
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+  };
+
+  // Handle Payment Screenshot Upload
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file (PNG, JPG, JPEG).');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPaymentScreenshot(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Step 2: Submit final booking with payment screenshot
+  const handleFinalSubmit = async () => {
+    if (!paymentScreenshot) {
+      alert('Please upload your payment confirmation screenshot so the Reader can verify and unlock your session.');
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -93,152 +129,253 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({ onJoinSession 
           timeSlot: selectedTime,
           timezone,
           focus: focusArea,
-          notes
+          notes,
+          paymentScreenshot,
+          transactionRef
         })
       });
 
       const data = await res.json();
       if (res.ok && data.booking) {
-        setConfirmedBooking(data.booking);
+        setCreatedBooking(data.booking);
+        setBookingStep('completed');
+        window.scrollTo({ top: 200, behavior: 'smooth' });
       } else {
-        alert(data.error || 'Failed to complete booking. Please try again.');
+        alert(data.error || 'Failed to submit sanctuary booking.');
       }
     } catch (err) {
       console.error(err);
-      alert('Network error connecting to booking server.');
+      alert('Network error connecting to sanctuary.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const copyUpiId = () => {
+    navigator.clipboard.writeText('9226634637-2@ybl');
+    setCopiedUpi(true);
+    setTimeout(() => setCopiedUpi(false), 2000);
+  };
+
   const copySessionUrl = () => {
-    if (!confirmedBooking) return;
-    const url = `${window.location.origin}/session/${confirmedBooking.sessionId}`;
+    if (!createdBooking) return;
+    const url = `${window.location.origin}/session/${createdBooking.sessionId}`;
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
   };
 
-  // Download iCalendar event (.ics)
-  const downloadIcs = () => {
-    if (!confirmedBooking) return;
-    const sessionUrl = `${window.location.origin}/session/${confirmedBooking.sessionId}`;
-    const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Live Tarot Sanctuary//EN
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-SUMMARY:🔮 Live Tarot Reading with Sanctuary Reader
-DESCRIPTION:Your live virtual tarot session for ${confirmedBooking.focus}.\\nJoin room: ${sessionUrl}
-LOCATION:${sessionUrl}
-STATUS:CONFIRMED
-END:VEVENT
-END:VCALENDAR`;
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', `tarot-reading-${confirmedBooking.sessionId}.ics`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Intro Header */}
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1e1333] border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel font-semibold uppercase tracking-widest mb-3">
-          <Flame size={14} className="text-amber-400 animate-pulse" />
-          <span>The Mystic Arcana Sanctuary</span>
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#e2d5b8] to-[#d4af37] tracking-tight mb-3 drop-shadow">
-          Book Your Sacred Tarot Reading
-        </h1>
-        <p className="text-[#e2d5b8]/85 max-w-xl mx-auto text-sm sm:text-base leading-relaxed font-serif">
-          Curated by <strong className="text-[#fef08a]">Founder Vedant Baviskar</strong> & <strong className="text-[#fef08a]">Co-Founder Anvii Panchal</strong>. Step into a synchronized 2-person esoteric chamber with your reader. Experience the authentic 78 Rider-Waite arcana, live split shuffle, and sacred channeled guidance.
-        </p>
-      </div>
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      {/* 1. Grand Founders Showcase (Prominent at top) */}
+      <FoundersBanner />
 
-      {confirmedBooking ? (
-        /* ================= CONFIRMATION SCREEN ================= */
-        <div className="bg-gradient-to-b from-[#1b142f] to-[#100d1e] border-2 border-amber-500/40 rounded-3xl p-6 sm:p-10 shadow-2xl shadow-purple-950/70 text-center max-w-2xl mx-auto">
-          <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={36} />
+      {/* ================= STEP 3: SUBMITTED & AWAITING READER APPROVAL ================= */}
+      {bookingStep === 'completed' && createdBooking && (
+        <div className="bg-gradient-to-b from-[#1b1030] via-[#110920] to-[#07040d] border-2 border-[#d4af37]/70 rounded-3xl p-6 sm:p-10 shadow-2xl text-center max-w-2xl mx-auto">
+          {/* Hourglass / Sealed Gate Icon */}
+          <div className="w-20 h-20 rounded-full bg-amber-500/20 border-2 border-[#d4af37] text-[#fef08a] flex items-center justify-center mx-auto mb-4 shadow-[0_0_25px_rgba(212,175,55,0.4)]">
+            <Shield size={40} className="animate-pulse" />
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-serif font-bold text-amber-200 mb-2">
-            Your Sanctuary Slot is Confirmed
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/15 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2">
+            <span>Payment Submitted • Approval Pending</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-gothic-title font-bold text-[#fef08a] mb-2 drop-shadow">
+            Sanctuary Gates Sealed
           </h2>
-          <p className="text-purple-300/80 text-sm mb-6">
-            A confirmation notification has been registered for <strong className="text-amber-300">{confirmedBooking.clientEmail}</strong>.
+
+          <p className="text-sm text-[#eedec5]/90 font-serif leading-relaxed mb-6">
+            Your sacred slot request has been consecrated. <strong className="text-[#fef08a]">Reader Vedant Baviskar & Anvii Panchal</strong> will verify your payment screenshot in the Reader Sanctum before granting entrance to your live chamber.
           </p>
 
-          <div className="bg-purple-950/40 border border-purple-500/30 rounded-2xl p-5 mb-6 text-left space-y-3">
-            <div className="flex justify-between items-center pb-2 border-b border-purple-500/20 text-sm">
-              <span className="text-purple-400 flex items-center gap-1.5">
-                <CalendarIcon size={15} /> Date & Time
+          {/* Booking Summary Box */}
+          <div className="bg-black/60 border border-[#d4af37]/35 rounded-2xl p-5 mb-6 text-left space-y-3 font-serif">
+            <div className="flex justify-between items-center pb-2 border-b border-[#d4af37]/20 text-xs sm:text-sm">
+              <span className="text-[#c4b5fd] flex items-center gap-1.5 font-cinzel">
+                <CalendarIcon size={14} className="text-[#d4af37]" /> Date & Time
               </span>
-              <span className="font-semibold text-purple-100">
-                {confirmedBooking.date} at {confirmedBooking.timeSlot}
+              <span className="font-bold text-[#fef08a]">
+                {createdBooking.date} at {createdBooking.timeSlot}
               </span>
             </div>
-            <div className="flex justify-between items-center pb-2 border-b border-purple-500/20 text-sm">
-              <span className="text-purple-400 flex items-center gap-1.5">
-                <Globe size={15} /> Timezone
+            <div className="flex justify-between items-center pb-2 border-b border-[#d4af37]/20 text-xs sm:text-sm">
+              <span className="text-[#c4b5fd] flex items-center gap-1.5 font-cinzel">
+                <Globe size={14} className="text-[#d4af37]" /> Timezone
               </span>
-              <span className="text-purple-200">{confirmedBooking.timezone}</span>
+              <span className="text-[#eedec5]">{createdBooking.timezone}</span>
             </div>
-            <div className="flex justify-between items-center text-sm">
-              <span className="text-purple-400 flex items-center gap-1.5">
-                <Compass size={15} /> Inquiry Focus
+            <div className="flex justify-between items-center text-xs sm:text-sm">
+              <span className="text-[#c4b5fd] flex items-center gap-1.5 font-cinzel">
+                <Compass size={14} className="text-[#d4af37]" /> Inquiry Focus
               </span>
-              <span className="font-semibold text-amber-300">{confirmedBooking.focus}</span>
+              <span className="font-bold text-[#fde047]">{createdBooking.focus}</span>
             </div>
           </div>
 
-          <div className="bg-amber-950/30 border border-amber-500/40 rounded-xl p-3 mb-6 flex items-center justify-between gap-2 text-xs">
-            <span className="text-amber-200 truncate font-mono">
-              {window.location.origin}/session/{confirmedBooking.sessionId}
+          {/* Copyable Link */}
+          <div className="bg-black/80 border border-[#d4af37]/40 rounded-xl p-3 mb-6 flex items-center justify-between gap-2 text-xs">
+            <span className="text-[#fde047] truncate font-mono">
+              {window.location.origin}/session/{createdBooking.sessionId}
             </span>
             <button
               onClick={copySessionUrl}
-              className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 flex items-center gap-1 font-medium transition shrink-0"
+              className="px-3.5 py-1.5 rounded-lg bg-[#d4af37]/20 hover:bg-[#d4af37]/30 text-[#fde047] border border-[#d4af37]/40 font-cinzel font-semibold flex items-center gap-1 transition shrink-0"
             >
               <Copy size={13} />
-              <span>{copiedLink ? 'Copied!' : 'Copy Link'}</span>
+              <span>{copiedLink ? 'Copied!' : 'Copy Chamber Link'}</span>
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {/* Enter Waiting Chamber Button */}
+          <button
+            onClick={() => onJoinSession(createdBooking.sessionId, createdBooking.clientName)}
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.4)] transition flex items-center justify-center gap-2 group"
+          >
+            <ShieldCheck size={18} className="text-[#fde047]" />
+            <span>Enter Sanctuary Waiting Chamber</span>
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+          <p className="text-[11px] text-[#9ca3af] italic mt-3">
+            * The sanctuary doors will open automatically the moment the reader approves your verification.
+          </p>
+        </div>
+      )}
+
+      {/* ================= STEP 2: CONSECRATED PAYMENT & SCREENSHOT UPLOAD ================= */}
+      {bookingStep === 'payment' && (
+        <div className="bg-gradient-to-b from-[#1b1030] via-[#110920] to-[#07040d] border-2 border-[#d4af37]/70 rounded-3xl p-6 sm:p-10 shadow-2xl max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 border border-[#d4af37]/40 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2">
+              <QrCode size={14} className="text-[#facc15]" />
+              <span>Step 2 of 2: Consecrated Payment</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-gothic-title font-bold text-[#fef08a] drop-shadow">
+              Scan QR & Upload Verification
+            </h2>
+            <p className="text-xs sm:text-sm text-[#e2d5b8]/80 font-serif mt-1">
+              Complete your sanctuary offering via PhonePe or any UPI app, then upload the confirmation screenshot below.
+            </p>
+          </div>
+
+          {/* Payment QR Code Showcase */}
+          <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-black/70 border-2 border-[#d4af37]/60 shadow-xl mb-6 relative">
+            {/* The Actual User Uploaded Payment QR */}
+            <div className="relative p-2 rounded-2xl bg-white shadow-2xl border-4 border-[#d4af37]">
+              <img
+                src="/payment-qr.jpg"
+                alt="Sanctuary Payment QR Code"
+                className="w-56 h-auto sm:w-64 rounded-xl object-contain shadow-inner"
+              />
+            </div>
+
+            {/* UPI ID Copy Block */}
+            <div className="mt-4 flex items-center gap-2 bg-[#180f2b] px-4 py-2 rounded-xl border border-[#d4af37]/40 text-xs sm:text-sm font-mono text-[#fef08a]">
+              <span>UPI ID: <strong>9226634637-2@ybl</strong></span>
+              <button
+                type="button"
+                onClick={copyUpiId}
+                className="p-1 hover:bg-[#d4af37]/20 rounded text-[#d4af37] transition"
+                title="Copy UPI ID"
+              >
+                <Copy size={14} />
+              </button>
+              {copiedUpi && <span className="text-[10px] text-emerald-400 font-cinzel">Copied!</span>}
+            </div>
+            <div className="text-[11px] text-[#9ca3af] font-cinzel mt-1">
+              Punjab National Bank • Supported on all UPI Apps
+            </div>
+          </div>
+
+          {/* Screenshot Upload Zone */}
+          <div className="space-y-4 mb-6">
+            <label className="block text-xs uppercase tracking-wider text-[#d4af37] font-cinzel font-bold">
+              Upload Payment Confirmation Screenshot *
+            </label>
+
+            {paymentScreenshot ? (
+              <div className="relative p-3 rounded-2xl bg-black/60 border border-emerald-500/60 flex flex-col items-center">
+                <img
+                  src={paymentScreenshot}
+                  alt="Uploaded Payment Confirmation"
+                  className="max-h-64 rounded-xl object-contain border border-[#d4af37]/30 shadow-lg mb-2"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPaymentScreenshot(null)}
+                  className="px-3 py-1 rounded-lg bg-rose-950/60 text-rose-300 border border-rose-500/40 text-xs font-cinzel hover:bg-rose-900 transition"
+                >
+                  Change Screenshot
+                </button>
+              </div>
+            ) : (
+              <label className="border-2 border-dashed border-[#d4af37]/50 hover:border-[#d4af37] bg-black/40 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer transition-colors group">
+                <Upload size={32} className="text-[#d4af37] group-hover:scale-110 transition-transform mb-2" />
+                <span className="font-cinzel text-sm font-bold text-[#fef08a] mb-1">
+                  Click or Drag to Upload Payment Screenshot
+                </span>
+                <span className="text-xs text-[#9ca3af] font-serif">
+                  PNG, JPG, or screenshot from PhonePe/Google Pay
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </label>
+            )}
+
+            {/* Optional Transaction UTR */}
+            <div>
+              <label className="block text-xs uppercase tracking-wider text-[#c4b5fd] font-cinzel font-medium mb-1">
+                Transaction ID / UTR Number (Optional)
+              </label>
+              <input
+                type="text"
+                value={transactionRef}
+                onChange={(e) => setTransactionRef(e.target.value)}
+                placeholder="e.g. 12-digit UPI reference number"
+                className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/50 text-sm focus:outline-none focus:border-[#d4af37] transition font-mono"
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
-              onClick={() => onJoinSession(confirmedBooking.sessionId, confirmedBooking.clientName)}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-purple-600 to-amber-600 text-white font-semibold text-sm tracking-wide shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition flex items-center justify-center gap-2 group"
+              type="button"
+              onClick={() => setBookingStep('details')}
+              className="px-6 py-3.5 rounded-2xl bg-black/50 hover:bg-black/80 text-[#eedec5] border border-[#d4af37]/30 text-xs font-cinzel font-bold uppercase transition"
             >
-              <Sparkles size={16} />
-              <span>Enter Sanctuary Room Now</span>
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              ← Back to Slot
             </button>
 
             <button
-              onClick={downloadIcs}
-              className="px-5 py-3.5 rounded-xl bg-purple-900/40 hover:bg-purple-900/60 text-purple-200 border border-purple-500/40 font-medium text-sm transition flex items-center justify-center gap-2"
+              type="button"
+              disabled={isSubmitting || !paymentScreenshot}
+              onClick={handleFinalSubmit}
+              className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
             >
-              <CalendarIcon size={16} />
-              <span>Add to Calendar (.ics)</span>
+              <Sparkles size={16} className="text-[#fde047]" />
+              <span>{isSubmitting ? 'Transmitting to Sanctum...' : 'Submit Payment for Reader Approval'}</span>
             </button>
           </div>
         </div>
-      ) : (
-        /* ================= BOOKING FORM ================= */
-        <form onSubmit={handleBookingSubmit} className="space-y-8">
+      )}
+
+      {/* ================= STEP 1: SELECT SLOT & SEEKER DETAILS ================= */}
+      {bookingStep === 'details' && (
+        <form onSubmit={handleProceedToPayment} className="space-y-8">
           {/* Section 1: Choose Date */}
-          <div className="bg-[#141026]/90 border border-purple-500/30 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
+          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-sm font-semibold uppercase tracking-wider text-amber-300 flex items-center gap-2">
-                <CalendarIcon size={16} /> 1. Select Your Date
+              <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2">
+                <CalendarIcon size={16} className="text-[#d4af37]" /> 1. Select Divination Date
               </label>
-              <span className="text-xs text-purple-400">Available slots next 14 days</span>
+              <span className="text-xs text-[#d4af37]/80 font-cinzel">Upcoming 14 Days</span>
             </div>
 
             <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
@@ -249,14 +386,14 @@ END:VCALENDAR`;
                     key={item.dateStr}
                     type="button"
                     onClick={() => setSelectedDate(item.dateStr)}
-                    className={`p-3 rounded-xl border text-center transition flex flex-col items-center justify-center ${
+                    className={`p-3 rounded-2xl border text-center transition flex flex-col items-center justify-center ${
                       isSelected
-                        ? 'bg-gradient-to-b from-amber-500/30 to-purple-600/30 border-amber-400 text-amber-100 shadow-lg shadow-amber-500/20'
-                        : 'bg-purple-950/20 border-purple-500/20 text-purple-300 hover:border-purple-400/50 hover:bg-purple-900/30'
+                        ? 'bg-gradient-to-b from-[#9a3412]/50 to-[#581c87]/50 border-[#d4af37] text-[#fef08a] shadow-[0_0_15px_rgba(212,175,55,0.3)]'
+                        : 'bg-black/40 border-[#d4af37]/20 text-[#eedec5] hover:border-[#d4af37]/60 hover:bg-[#1a0f2e]/60'
                     }`}
                   >
-                    <span className="text-[11px] uppercase tracking-wider opacity-70">{item.dayName}</span>
-                    <span className="text-lg font-bold font-serif my-0.5">{item.dayNumber}</span>
+                    <span className="text-[10px] uppercase tracking-wider font-cinzel opacity-75">{item.dayName}</span>
+                    <span className="text-lg font-bold font-gothic-title my-0.5">{item.dayNumber}</span>
                     <span className="text-[10px] opacity-80">{item.monthName}</span>
                   </button>
                 );
@@ -265,35 +402,34 @@ END:VCALENDAR`;
           </div>
 
           {/* Section 2: Choose Time Slot & Timezone */}
-          <div className="bg-[#141026]/90 border border-purple-500/30 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
+          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-              <label className="text-sm font-semibold uppercase tracking-wider text-amber-300 flex items-center gap-2">
-                <Clock size={16} /> 2. Select Live Reading Slot
+              <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2">
+                <Clock size={16} className="text-[#d4af37]" /> 2. Select Consecrated Time Slot
               </label>
 
               {/* Timezone Selector */}
-              <div className="flex items-center gap-2 bg-purple-950/50 px-3 py-1.5 rounded-xl border border-purple-500/30 text-xs">
-                <Globe size={14} className="text-purple-400" />
-                <span className="text-purple-300">Timezone:</span>
+              <div className="flex items-center gap-2 bg-black/60 px-3.5 py-1.5 rounded-xl border border-[#d4af37]/30 text-xs">
+                <Globe size={14} className="text-[#d4af37]" />
+                <span className="text-[#c4b5fd] font-cinzel">Timezone:</span>
                 <select
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
-                  className="bg-transparent text-amber-300 font-medium focus:outline-none cursor-pointer"
+                  className="bg-transparent text-[#fef08a] font-medium focus:outline-none cursor-pointer"
                 >
-                  <option value={timezone} className="bg-[#16112a] text-purple-200">{timezone} (Detected)</option>
-                  <option value="America/New_York" className="bg-[#16112a] text-purple-200">America/New York (EST/EDT)</option>
-                  <option value="America/Los_Angeles" className="bg-[#16112a] text-purple-200">America/Los Angeles (PST/PDT)</option>
-                  <option value="America/Chicago" className="bg-[#16112a] text-purple-200">America/Chicago (CST/CDT)</option>
-                  <option value="Europe/London" className="bg-[#16112a] text-purple-200">Europe/London (GMT/BST)</option>
-                  <option value="Europe/Paris" className="bg-[#16112a] text-purple-200">Europe/Paris (CET/CEST)</option>
-                  <option value="Asia/Kolkata" className="bg-[#16112a] text-purple-200">Asia/Kolkata (IST)</option>
-                  <option value="Asia/Tokyo" className="bg-[#16112a] text-purple-200">Asia/Tokyo (JST)</option>
-                  <option value="Australia/Sydney" className="bg-[#16112a] text-purple-200">Australia/Sydney (AEST)</option>
+                  <option value={timezone} className="bg-[#16112a] text-[#eedec5]">{timezone} (Detected)</option>
+                  <option value="Asia/Kolkata" className="bg-[#16112a] text-[#eedec5]">Asia/Kolkata (IST)</option>
+                  <option value="America/New_York" className="bg-[#16112a] text-[#eedec5]">America/New York (EST)</option>
+                  <option value="America/Los_Angeles" className="bg-[#16112a] text-[#eedec5]">America/Los Angeles (PST)</option>
+                  <option value="Europe/London" className="bg-[#16112a] text-[#eedec5]">Europe/London (GMT)</option>
+                  <option value="Europe/Paris" className="bg-[#16112a] text-[#eedec5]">Europe/Paris (CET)</option>
+                  <option value="Asia/Dubai" className="bg-[#16112a] text-[#eedec5]">Asia/Dubai (GST)</option>
+                  <option value="Australia/Sydney" className="bg-[#16112a] text-[#eedec5]">Australia/Sydney (AEST)</option>
                 </select>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {TIME_SLOTS.map((time) => {
                 const isSelected = selectedTime === time;
                 return (
@@ -301,10 +437,10 @@ END:VCALENDAR`;
                     key={time}
                     type="button"
                     onClick={() => setSelectedTime(time)}
-                    className={`py-3 px-4 rounded-xl border font-medium text-sm transition flex items-center justify-center gap-2 ${
+                    className={`py-3 px-4 rounded-xl border font-cinzel font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 ${
                       isSelected
-                        ? 'bg-amber-500/25 border-amber-400 text-amber-200 shadow-md shadow-amber-500/20'
-                        : 'bg-purple-950/20 border-purple-500/20 text-purple-200 hover:border-purple-400/50 hover:bg-purple-900/30'
+                        ? 'bg-[#d4af37]/25 border-[#d4af37] text-[#fef08a] shadow-[0_0_15px_rgba(212,175,55,0.25)]'
+                        : 'bg-black/40 border-[#d4af37]/20 text-[#eedec5] hover:border-[#d4af37]/50 hover:bg-black/60'
                     }`}
                   >
                     <span>{time}</span>
@@ -315,12 +451,12 @@ END:VCALENDAR`;
           </div>
 
           {/* Section 3: Focus Area */}
-          <div className="bg-[#141026]/90 border border-purple-500/30 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
-            <label className="text-sm font-semibold uppercase tracking-wider text-amber-300 flex items-center gap-2 mb-4">
-              <Compass size={16} /> 3. Reading Focus & Intention
+          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
+            <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2 mb-4">
+              <Compass size={16} className="text-[#d4af37]" /> 3. Reading Focus & Intention
             </label>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
               {FOCUS_AREAS.map((f) => {
                 const isSelected = focusArea === f.id;
                 const IconComp = f.icon;
@@ -328,18 +464,18 @@ END:VCALENDAR`;
                   <div
                     key={f.id}
                     onClick={() => setFocusArea(f.id)}
-                    className={`p-4 rounded-xl border cursor-pointer transition flex items-start gap-3.5 ${
+                    className={`p-4 rounded-2xl border cursor-pointer transition flex items-start gap-3.5 ${
                       isSelected
-                        ? 'bg-purple-900/30 border-amber-400/80 shadow-md shadow-amber-500/10'
-                        : 'bg-purple-950/20 border-purple-500/20 hover:border-purple-400/40 hover:bg-purple-900/20'
+                        ? 'bg-[#1e1333] border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
+                        : 'bg-black/40 border-[#d4af37]/20 hover:border-[#d4af37]/40 hover:bg-black/60'
                     }`}
                   >
-                    <div className={`p-2.5 rounded-lg bg-black/40 border border-purple-500/30 ${f.color}`}>
+                    <div className={`p-2.5 rounded-xl bg-black/60 border border-[#d4af37]/30 ${f.color}`}>
                       <IconComp size={20} />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-sm text-purple-100 mb-0.5">{f.label}</h4>
-                      <p className="text-xs text-purple-400 leading-relaxed">{f.desc}</p>
+                      <h4 className="font-cinzel font-bold text-sm text-[#fef08a] mb-0.5">{f.label}</h4>
+                      <p className="text-xs text-[#c4b5fd]/80 font-serif leading-relaxed">{f.desc}</p>
                     </div>
                   </div>
                 );
@@ -347,28 +483,28 @@ END:VCALENDAR`;
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-wider text-purple-300 mb-1.5 font-medium">
-                Personal Intention or Specific Questions (Optional)
+              <label className="block text-xs uppercase tracking-wider text-[#d4af37] font-cinzel font-medium mb-1.5">
+                Personal Intention or Questions for the Reader (Optional)
               </label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="What situation is currently occupying your mind? What guidance do you hope the cards will illuminate today?"
+                placeholder="What burning question or transition is occupying your mind? The reader will attune to this intention during the ritual."
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl bg-purple-950/30 border border-purple-500/30 text-purple-100 placeholder-purple-500/60 focus:outline-none focus:border-amber-400 transition text-sm resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#eedec5] placeholder-[#9ca3af]/50 focus:outline-none focus:border-[#d4af37] transition text-sm resize-none font-serif leading-relaxed"
               />
             </div>
           </div>
 
-          {/* Section 4: Seeker Contact Details */}
-          <div className="bg-[#141026]/90 border border-purple-500/30 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
-            <label className="text-sm font-semibold uppercase tracking-wider text-amber-300 flex items-center gap-2 mb-4">
-              <ShieldCheck size={16} /> 4. Your Seeker Information
+          {/* Section 4: Seeker Information */}
+          <div className="bg-[#120a22]/90 border border-[#d4af37]/35 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
+            <label className="text-sm font-cinzel font-bold uppercase tracking-wider text-[#fef08a] flex items-center gap-2 mb-4">
+              <ShieldCheck size={16} className="text-[#d4af37]" /> 4. Seeker Identity
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-purple-300 mb-1 font-medium">
+                <label className="block text-xs uppercase tracking-wider text-[#c4b5fd] font-cinzel mb-1">
                   Full Name *
                 </label>
                 <input
@@ -377,13 +513,13 @@ END:VCALENDAR`;
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   placeholder="e.g. Maya Chen"
-                  className="w-full px-4 py-3 rounded-xl bg-purple-950/30 border border-purple-500/30 text-purple-100 placeholder-purple-500/60 focus:outline-none focus:border-amber-400 transition text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/50 focus:outline-none focus:border-[#d4af37] transition text-sm font-serif"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider text-purple-300 mb-1 font-medium">
-                  Email Address * (For Confirmation & Session Link)
+                <label className="block text-xs uppercase tracking-wider text-[#c4b5fd] font-cinzel mb-1">
+                  Email Address *
                 </label>
                 <input
                   type="email"
@@ -391,24 +527,25 @@ END:VCALENDAR`;
                   value={clientEmail}
                   onChange={(e) => setClientEmail(e.target.value)}
                   placeholder="e.g. maya@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-purple-950/30 border border-purple-500/30 text-purple-100 placeholder-purple-500/60 focus:outline-none focus:border-amber-400 transition text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-black/60 border border-[#d4af37]/30 text-[#fef08a] placeholder-[#9ca3af]/50 focus:outline-none focus:border-[#d4af37] transition text-sm font-serif"
                 />
               </div>
             </div>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit to Payment Button */}
           <div className="text-center pt-2">
             <button
               type="submit"
-              disabled={isSubmitting || !clientName || !clientEmail}
-              className="w-full sm:w-auto px-12 py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.3)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
+              disabled={!clientName || !clientEmail}
+              className="w-full sm:w-auto px-12 py-4 rounded-2xl bg-gradient-to-r from-[#9a3412] via-[#7e22ce] to-[#b45309] hover:from-[#c2410c] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border border-[#d4af37]/60 shadow-[0_0_30px_rgba(212,175,55,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 mx-auto hover:scale-105"
             >
-              <Sparkles size={18} className="text-[#facc15]" />
-              <span>{isSubmitting ? 'Resonating with the Arcana...' : 'Confirm Sacred Slot & Enter Sanctuary'}</span>
+              <QrCode size={18} className="text-[#facc15]" />
+              <span>Proceed to Consecrated Payment & QR Verification</span>
+              <ArrowRight size={16} />
             </button>
             <p className="text-[12px] text-[#e2d5b8]/70 font-cinzel tracking-wider mt-3">
-              🔒 Consecrated reading slot. Encrypted & synchronized room created instantly.
+              🔒 Strict Reader Approval Policy • Only approved seekers enter the sanctuary
             </p>
           </div>
         </form>
