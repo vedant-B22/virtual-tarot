@@ -133,7 +133,9 @@ function setupSocketHandlers(io) {
       if (!session) return;
 
       session.isShuffling = true;
+      db.saveSession(currentSessionId, session);
       io.to(currentSessionId).emit('shuffle_started');
+      io.to(currentSessionId).emit('session_state', session);
 
       setTimeout(() => {
         session.deck = shuffleDeck(session.deck);
@@ -141,7 +143,7 @@ function setupSocketHandlers(io) {
         db.saveSession(currentSessionId, session);
         io.to(currentSessionId).emit('shuffle_ended', { deck: session.deck });
         io.to(currentSessionId).emit('session_state', session);
-      }, 1800);
+      }, 4500);
     });
 
     // Pick Card from Spread (Step 4)

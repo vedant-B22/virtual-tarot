@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Flame, Layers, Wand2, Compass, Wind } from 'lucide-react';
+import { Sparkles, Wand2, Flame } from 'lucide-react';
 import { audioEngine } from '../utils/audio';
 
 interface DeckShuffleAnimationProps {
@@ -9,395 +9,402 @@ interface DeckShuffleAnimationProps {
   canTrigger?: boolean;
 }
 
-type ShuffleStyle = 'vortex' | 'stream' | 'cascade' | 'wheel';
+type ShuffleStage = 'idle' | 'ascend' | 'split' | 'riffle' | 'cascade' | 'consecrated';
 
 export const DeckShuffleAnimation: React.FC<DeckShuffleAnimationProps> = ({
   isShuffling: externalIsShuffling,
   onShuffleTrigger,
   canTrigger = true
 }) => {
-  const [internalShuffling, setInternalShuffling] = useState(false);
-  const isShuffling = externalIsShuffling !== undefined ? externalIsShuffling : internalShuffling;
+  const [internalAnimating, setInternalAnimating] = useState(false);
+  const [stage, setStage] = useState<ShuffleStage>('idle');
+  const [progressPercent, setProgressPercent] = useState(0);
+  const audioIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Selected magical style
-  const [activeStyle, setActiveStyle] = useState<ShuffleStyle>('vortex');
+  // Synchronize when external isShuffling becomes true
+  useEffect(() => {
+    if (externalIsShuffling && !internalAnimating) {
+      startShuffleSequence();
+    }
+  }, [externalIsShuffling]);
 
-  // Animation sub-stage
-  const [choreographyStep, setChoreographyStep] = useState<
-    'idle' | 'ascend' | 'dance' | 'bridge' | 'converge'
-  >('idle');
+  const startShuffleSequence = () => {
+    if (internalAnimating) return;
+    setInternalAnimating(true);
+    setProgressPercent(0);
 
-  const triggerShuffle = (style?: ShuffleStyle) => {
-    if (isShuffling) return;
-    if (style) setActiveStyle(style);
+    // Initial ascension
+    setStage('ascend');
+    audioEngine.playShuffle();
 
+    // Sound effects cadence
+    let flipCount = 0;
+    if (audioIntervalRef.current) clearInterval(audioIntervalRef.current);
+    audioIntervalRef.current = setInterval(() => {
+      flipCount++;
+      if (flipCount >= 4 && flipCount <= 14) {
+        audioEngine.playFlip();
+      }
+    }, 180);
+
+    // Timeline steps:
+    // 0.8s: Split into two wings
+    const tSplit = setTimeout(() => {
+      setStage('split');
+      setProgressPercent(25);
+    }, 850);
+
+    // 1.8s: Riffle & Interlace in mid-air
+    const tRiffle = setTimeout(() => {
+      setStage('riffle');
+      setProgressPercent(55);
+      audioEngine.playShuffle();
+    }, 1800);
+
+    // 3.1s: Magician's Waterfall Bridge
+    const tCascade = setTimeout(() => {
+      setStage('cascade');
+      setProgressPercent(80);
+      if (audioIntervalRef.current) {
+        clearInterval(audioIntervalRef.current);
+        audioIntervalRef.current = null;
+      }
+    }, 3100);
+
+    // 4.1s: Consecrated & settled back on the altar
+    const tFinish = setTimeout(() => {
+      setStage('consecrated');
+      setProgressPercent(100);
+      audioEngine.playChime(587);
+    }, 4100);
+
+    // 5.0s: Reset back to ready state
+    const tReset = setTimeout(() => {
+      setStage('idle');
+      setInternalAnimating(false);
+      setProgressPercent(0);
+      if (audioIntervalRef.current) {
+        clearInterval(audioIntervalRef.current);
+        audioIntervalRef.current = null;
+      }
+    }, 5200);
+
+    return () => {
+      clearTimeout(tSplit);
+      clearTimeout(tRiffle);
+      clearTimeout(tCascade);
+      clearTimeout(tFinish);
+      clearTimeout(tReset);
+      if (audioIntervalRef.current) clearInterval(audioIntervalRef.current);
+    };
+  };
+
+  const handleShuffleClick = () => {
+    if (internalAnimating) return;
+    startShuffleSequence();
     if (onShuffleTrigger) {
       onShuffleTrigger();
-    } else {
-      setInternalShuffling(true);
-      audioEngine.playShuffle();
-      setTimeout(() => {
-        setInternalShuffling(false);
-        audioEngine.playChime(587);
-      }, 4200);
     }
   };
 
-  useEffect(() => {
-    if (isShuffling) {
-      audioEngine.playShuffle();
-      setChoreographyStep('ascend');
+  // 20 physical card representations for dense 3D visual presence
+  const totalCards = 20;
+  const cards = Array.from({ length: totalCards }, (_, i) => i);
 
-      const t1 = setTimeout(() => {
-        setChoreographyStep('dance');
-        audioEngine.playShuffle();
-      }, 800);
+  // Compute 3D physics coordinates for each card
+  const getCardStyle = (index: number) => {
+    const isEven = index % 2 === 0;
+    const half = Math.floor(totalCards / 2);
+    const stackPos = index < half ? index : index - half;
 
-      const t2 = setTimeout(() => {
-        setChoreographyStep('bridge');
-        audioEngine.playChime(440);
-      }, 2200);
-
-      const t3 = setTimeout(() => {
-        setChoreographyStep('converge');
-        audioEngine.playFlip();
-      }, 3400);
-
-      const t4 = setTimeout(() => {
-        setChoreographyStep('idle');
-      }, 4200);
-
-      return () => {
-        clearTimeout(t1);
-        clearTimeout(t2);
-        clearTimeout(t3);
-        clearTimeout(t4);
-      };
-    } else {
-      setChoreographyStep('idle');
-    }
-  }, [isShuffling]);
-
-  // 18 distinct physical card entities for hyper-realistic 3D presence
-  const cards = Array.from({ length: 18 }, (_, i) => i);
-
-  // Compute 3D transform for each card based on the current magical choreography
-  const getCardTransform = (idx: number) => {
-    const total = cards.length;
-    const progress = idx / total;
-    const angle = progress * Math.PI * 2;
-
-    if (choreographyStep === 'idle') {
+    if (stage === 'idle') {
+      // Neatly squared consecrated deck on the velvet altar
+      const offset = (index - half) * 0.45;
       return {
-        x: (idx - 9) * 0.4,
-        y: (idx - 9) * 0.4,
-        z: idx * 2.5,
-        rotateX: 15,
+        x: offset,
+        y: offset,
+        z: index * 2.8,
+        rotateX: 18,
         rotateY: 0,
-        rotateZ: (idx - 9) * 0.25,
-        scale: 1
+        rotateZ: (index - half) * 0.2,
+        scale: 1,
+        opacity: 1
       };
     }
 
-    if (choreographyStep === 'ascend') {
-      // Levitating into the air with golden aura
+    if (stage === 'ascend') {
+      // Deck levitating 70px above the altar in golden light
       return {
-        x: (idx - 9) * 2,
-        y: -50 - idx * 3.5,
-        z: 80 + idx * 8,
+        x: (index - half) * 0.8,
+        y: -65 - index * 1.5,
+        z: 80 + index * 4,
         rotateX: 25,
-        rotateY: (idx - 9) * 3,
-        rotateZ: (idx - 9) * 1.5,
-        scale: 1.05
+        rotateY: (index - half) * 1.2,
+        rotateZ: 0,
+        scale: 1.05,
+        opacity: 1
       };
     }
 
-    if (choreographyStep === 'dance') {
-      if (activeStyle === 'vortex') {
-        // Magical 3D Spiral Helix / Vortex in mid-air
-        const radius = 130 + Math.sin(idx) * 25;
-        const height = (idx - 9) * 16;
-        return {
-          x: Math.cos(angle * 2) * radius,
-          y: -80 + height,
-          z: Math.sin(angle * 2) * 160,
-          rotateX: 20 + Math.sin(angle) * 30,
-          rotateY: (angle * 180) / Math.PI + 90,
-          rotateZ: idx * 8,
-          scale: 0.95 + Math.sin(idx) * 0.1
-        };
-      }
-
-      if (activeStyle === 'stream') {
-        // Triple Pack Aerial Stream: 3 floating packs with cards shooting across
-        const pack = idx % 3;
-        const packX = pack === 0 ? -120 : pack === 1 ? 0 : 120;
-        const packY = pack === 1 ? -90 : -40;
-        const shoot = idx > 9 ? Math.sin(idx * 2) * 80 : 0;
-        return {
-          x: packX + shoot,
-          y: packY - (idx % 6) * 6,
-          z: (idx % 6) * 20,
-          rotateX: 30,
-          rotateY: pack === 0 ? 35 : pack === 2 ? -35 : 0,
-          rotateZ: pack === 0 ? -15 : pack === 2 ? 15 : 0,
-          scale: 0.96
-        };
-      }
-
-      if (activeStyle === 'cascade') {
-        // High-speed interleaving riffle stream
-        const isLeft = idx % 2 === 0;
-        return {
-          x: isLeft ? -90 + (idx * 6) : 90 - (idx * 6),
-          y: -40 - (idx * 4),
-          z: idx * 10,
-          rotateX: 25,
-          rotateY: isLeft ? 28 : -28,
-          rotateZ: isLeft ? -12 : 12,
-          scale: 1
-        };
-      }
-
-      // Wheel style: 360-degree floating sunburst circle
-      const r = 140;
+    if (stage === 'split') {
+      // Deck separates cleanly into Left Wing and Right Wing
+      const isLeft = index < half;
+      const wingX = isLeft ? -130 : 130;
+      const wingRotZ = isLeft ? -15 : 15;
+      const wingRotY = isLeft ? 22 : -22;
       return {
-        x: Math.cos(angle) * r,
-        y: -60 + Math.sin(angle) * 35,
-        z: Math.sin(angle) * 90,
-        rotateX: 20,
-        rotateY: (angle * 180) / Math.PI,
-        rotateZ: (angle * 180) / Math.PI - 90,
-        scale: 0.92
+        x: wingX + (stackPos - half / 2) * 1.5,
+        y: -50 - stackPos * 2.5,
+        z: 60 + stackPos * 6,
+        rotateX: 30,
+        rotateY: wingRotY,
+        rotateZ: wingRotZ,
+        scale: 1.02,
+        opacity: 1
       };
     }
 
-    if (choreographyStep === 'bridge') {
-      // The Grand Magician's 3D Bridge bend and waterfall snap
-      const centerDist = Math.abs(idx - 9);
-      const bend = Math.cos((centerDist / 9) * (Math.PI / 2)) * 65;
+    if (stage === 'riffle') {
+      // Rapid interleaving riffle stream toward center axis
+      const stagger = (index / totalCards) * 18;
+      const interleaveX = (isEven ? -22 - stagger : 22 + stagger) * 0.7;
       return {
-        x: (idx - 9) * 3,
-        y: -85 + bend,
-        z: 120 - centerDist * 8,
-        rotateX: 45 - bend * 0.4,
+        x: interleaveX,
+        y: -75 + (index - half) * 4.5,
+        z: 110 + index * 5,
+        rotateX: 20 + Math.sin(index) * 15,
+        rotateY: isEven ? 16 : -16,
+        rotateZ: (index - half) * 2.5,
+        scale: 1.04,
+        opacity: 1
+      };
+    }
+
+    if (stage === 'cascade') {
+      // The Grand Magician's Waterfall Bridge arching in 3D perspective
+      const centerDist = Math.abs(index - half);
+      const bridgeArch = Math.cos((centerDist / half) * (Math.PI / 2)) * 80;
+      return {
+        x: (index - half) * 2.2,
+        y: -95 + bridgeArch,
+        z: 130 - centerDist * 9,
+        rotateX: 42 - bridgeArch * 0.35,
         rotateY: 0,
-        rotateZ: (idx - 9) * 2,
-        scale: 1.08
+        rotateZ: (index - half) * 1.4,
+        scale: 1.06,
+        opacity: 1
       };
     }
 
-    if (choreographyStep === 'converge') {
-      // Snapping together with sonic bloom
+    if (stage === 'consecrated') {
+      // Unified deck landing smoothly back into the sacred altar
       return {
-        x: (idx - 9) * 0.2,
-        y: (idx - 9) * 0.2,
-        z: idx * 2.8,
-        rotateX: 15,
+        x: (index - half) * 0.2,
+        y: (index - half) * 0.2,
+        z: index * 2.5,
+        rotateX: 18,
         rotateY: 0,
         rotateZ: 0,
-        scale: 1
+        scale: 1,
+        opacity: 1
       };
     }
 
-    return { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 };
+    return { x: 0, y: 0, z: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1, opacity: 1 };
   };
 
-  return (
-    <div className="flex flex-col items-center justify-center my-4 relative select-none w-full max-w-4xl mx-auto">
-      {/* Mystical Theatrical Atmosphere Background */}
-      <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,rgba(180,83,9,0.2)_0%,rgba(88,28,135,0.22)_35%,rgba(76,5,25,0.28)_60%,transparent_85%)] rounded-full blur-3xl pointer-events-none" />
+  const isCurrentlyShuffling = internalAnimating || Boolean(externalIsShuffling);
 
-      {/* Orbiting Arcane Alchemy Glyphs */}
-      <div className="absolute w-[440px] h-[440px] sm:w-[540px] sm:h-[540px] rounded-full border-2 border-dashed border-[#d4af37]/25 flex items-center justify-center pointer-events-none animate-spin-slow">
-        <div className="absolute inset-4 rounded-full border border-[#d4af37]/20" />
-        <span className="absolute top-2 text-[#fde047] text-sm font-cinzel tracking-widest drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]">
-          🜂 IGNIS (FIRE)
+  return (
+    <div className="w-full flex flex-col items-center justify-center my-6 relative select-none">
+      {/* Altar Ambiance Glow */}
+      <div className="absolute -inset-16 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.18)_0%,rgba(127,29,29,0.22)_40%,transparent_75%)] rounded-full blur-3xl pointer-events-none" />
+
+      {/* Ancient Astrological Wheel Floor Inlay */}
+      <div className="absolute w-[420px] h-[420px] sm:w-[520px] sm:h-[520px] rounded-full border border-[#c5a059]/20 flex items-center justify-center pointer-events-none animate-spin-slow">
+        <div className="absolute inset-4 rounded-full border border-dashed border-[#c5a059]/15" />
+        <div className="absolute inset-16 rounded-full border border-[#c5a059]/10" />
+        <span className="absolute top-2 text-[#e5c158]/80 text-[11px] font-cinzel tracking-[0.25em]">
+          ✦ I • THE SACRED WILL ✦
         </span>
-        <span className="absolute bottom-2 text-[#67e8f9] text-sm font-cinzel tracking-widest drop-shadow-[0_0_8px_rgba(103,232,249,0.8)]">
-          🜄 AQUA (WATER)
+        <span className="absolute bottom-2 text-[#e5c158]/80 text-[11px] font-cinzel tracking-[0.25em]">
+          ✦ XXI • THE COSMIC RETURN ✦
         </span>
-        <span className="absolute left-2 text-[#fef08a] text-sm font-cinzel tracking-widest drop-shadow-[0_0_8px_rgba(254,240,138,0.8)]">
-          🜁 AER (AIR)
+        <span className="absolute left-2 text-[#e5c158]/80 text-[11px] font-cinzel tracking-[0.25em]">
+          ✦ 0 • THE VOID FOOL ✦
         </span>
-        <span className="absolute right-2 text-[#86efac] text-sm font-cinzel tracking-widest drop-shadow-[0_0_8px_rgba(134,239,172,0.8)]">
-          🜃 TERRA (EARTH)
+        <span className="absolute right-2 text-[#e5c158]/80 text-[11px] font-cinzel tracking-[0.25em]">
+          ✦ X • WHEEL OF DESTINY ✦
         </span>
       </div>
 
       {/* 3D Altar Stage */}
       <div
-        className="relative w-80 h-80 sm:w-[480px] sm:h-[360px] flex items-center justify-center perspective-1000 my-6"
+        className="relative w-72 h-72 sm:w-[440px] sm:h-[360px] flex items-center justify-center my-6"
         style={{ perspective: '1600px', transformStyle: 'preserve-3d' }}
       >
-        {/* Stone / Velvet Pedestal Shadow */}
-        <div className="absolute w-72 h-36 sm:w-96 sm:h-44 rounded-[100%] bg-black/90 blur-xl translate-y-36 border border-[#d4af37]/20 pointer-events-none shadow-[0_0_60px_rgba(0,0,0,0.9)]" />
+        {/* Obsidian Stone Pedestal Shadow */}
+        <div className="absolute w-64 h-32 sm:w-80 sm:h-40 rounded-[100%] bg-black/95 blur-2xl translate-y-36 border border-[#c5a059]/20 pointer-events-none shadow-[0_0_80px_rgba(0,0,0,0.95)]" />
 
-        {/* 18 Levitating 3D Cards */}
+        {/* Shockwave Burst upon Completion */}
+        <AnimatePresence>
+          {stage === 'consecrated' && (
+            <motion.div
+              initial={{ scale: 0.2, opacity: 0.9 }}
+              animate={{ scale: 2.4, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.1, ease: 'easeOut' }}
+              className="absolute w-64 h-64 rounded-full border-2 border-[#d4af37] bg-gradient-to-r from-[#d4af37]/25 to-transparent pointer-events-none z-50 shadow-[0_0_50px_rgba(212,175,55,0.7)]"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* 20 Levitating 3D Tarot Cards */}
         {cards.map((idx) => {
-          const t = getCardTransform(idx);
+          const s = getCardStyle(idx);
           const isTopCard = idx === cards.length - 1;
 
           return (
             <motion.div
-              key={`tarot-card-${idx}`}
+              key={`tarot-card-mesh-${idx}`}
               animate={{
-                x: t.x,
-                y: t.y,
-                z: t.z,
-                rotateX: t.rotateX,
-                rotateY: t.rotateY,
-                rotateZ: t.rotateZ,
-                scale: t.scale
+                x: s.x,
+                y: s.y,
+                z: s.z,
+                rotateX: s.rotateX,
+                rotateY: s.rotateY,
+                rotateZ: s.rotateZ,
+                scale: s.scale,
+                opacity: s.opacity
               }}
               transition={{
-                duration: choreographyStep === 'dance' ? 0.9 : 0.6,
-                ease: choreographyStep === 'dance' ? 'easeInOut' : 'easeOut'
+                duration: isCurrentlyShuffling ? 0.85 : 0.6,
+                ease: 'easeInOut'
               }}
               style={{
                 transformStyle: 'preserve-3d',
-                zIndex: Math.round(t.z + 100)
+                zIndex: Math.round(s.z + 120)
               }}
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
             >
-              {/* Ornate Velvet & Gold Tarot Card Mesh */}
+              {/* Museum-Grade Luxury Tarot Card Back */}
               <div
-                className={`w-[130px] h-[210px] sm:w-[155px] sm:h-[250px] rounded-2xl border-2 transition-all duration-300 p-2 flex flex-col items-center justify-between shadow-[0_15px_35px_rgba(0,0,0,0.9)] relative overflow-hidden ${
-                  isShuffling
-                    ? 'border-[#d4af37] shadow-[0_0_25px_rgba(212,175,55,0.6)] bg-gradient-to-b from-[#380614] via-[#1a0524] to-[#09020f]'
-                    : 'border-[#d4af37]/70 bg-gradient-to-b from-[#260510] via-[#12031a] to-[#07010c]'
+                className={`w-[136px] h-[220px] sm:w-[155px] sm:h-[250px] rounded-2xl border transition-all duration-300 p-2.5 flex flex-col items-center justify-between relative overflow-hidden shadow-[0_18px_36px_rgba(0,0,0,0.9)] ${
+                  isCurrentlyShuffling
+                    ? 'border-[#e5c158] shadow-[0_0_30px_rgba(212,175,55,0.55)] bg-gradient-to-b from-[#2a0614] via-[#140520] to-[#07020d]'
+                    : 'border-[#c5a059]/60 shadow-[0_10px_30px_rgba(0,0,0,0.85)] bg-gradient-to-b from-[#1f0510] via-[#0f041a] to-[#05010a]'
                 }`}
               >
-                {/* Gold Leaf Filigree Inset */}
-                <div className="absolute inset-1 rounded-xl border border-[#d4af37]/40 pointer-events-none" />
-                <div className="absolute top-1.5 left-1.5 text-[#d4af37]/80 text-[10px]">❖</div>
-                <div className="absolute top-1.5 right-1.5 text-[#d4af37]/80 text-[10px]">❖</div>
-                <div className="absolute bottom-1.5 left-1.5 text-[#d4af37]/80 text-[10px]">❖</div>
-                <div className="absolute bottom-1.5 right-1.5 text-[#d4af37]/80 text-[10px]">❖</div>
+                {/* 24k Gold Foil Inset Hairlines */}
+                <div className="absolute inset-1.5 rounded-xl border border-[#c5a059]/30 pointer-events-none" />
+                <div className="absolute inset-2.5 rounded-lg border border-[#c5a059]/20 pointer-events-none" />
 
-                {/* Card Top Title */}
-                <div className="w-full flex items-center justify-between px-1 text-[9px] font-cinzel text-[#d4af37] z-10 font-bold">
-                  <span>✦ 78</span>
+                {/* Corner Renaissance Rosettes */}
+                <span className="absolute top-2 left-2 text-[#c5a059]/80 text-[10px] leading-none">❖</span>
+                <span className="absolute top-2 right-2 text-[#c5a059]/80 text-[10px] leading-none">❖</span>
+                <span className="absolute bottom-2 left-2 text-[#c5a059]/80 text-[10px] leading-none">❖</span>
+                <span className="absolute bottom-2 right-2 text-[#c5a059]/80 text-[10px] leading-none">❖</span>
+
+                {/* Top Card Inscription */}
+                <div className="w-full flex items-center justify-between px-1.5 pt-0.5 text-[8.5px] font-cinzel text-[#e5c158]/90 z-10 font-bold tracking-widest uppercase">
+                  <span>✦ THE 78</span>
                   <span>ARCANA ✦</span>
                 </div>
 
-                {/* Central Mystic Seal / Wax Crest */}
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-[#d4af37] bg-gradient-to-tr from-[#7f1d1d] via-[#4c0519] to-[#120208] flex items-center justify-center shadow-[0_0_25px_rgba(212,175,55,0.5)] my-auto relative">
-                  <div className="absolute inset-1 rounded-full border border-dashed border-[#d4af37]/60 animate-spin-slow" />
-                  <span className="text-xl sm:text-2xl text-[#fef08a] drop-shadow-[0_0_10px_rgba(250,204,21,0.9)]">
-                    🜂
-                  </span>
+                {/* Central Embossed Sacred Seal */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-[#c5a059] bg-gradient-to-tr from-[#3a0614] via-[#1d0726] to-[#09020e] flex items-center justify-center shadow-[0_0_25px_rgba(197,160,89,0.45)] my-auto relative">
+                  <div className="absolute inset-1 rounded-full border border-dashed border-[#c5a059]/50 animate-spin-slow" />
+                  <div className="text-xl sm:text-2xl text-[#fde047] drop-shadow-[0_0_12px_rgba(250,204,21,0.9)]">
+                    ☼
+                  </div>
                 </div>
 
-                {/* Bottom Latin Seal */}
-                <div className="text-[9px] font-cinzel tracking-widest text-[#d4af37] font-bold z-10 uppercase">
-                  {isTopCard ? 'MASTER DECK' : 'SACRED ORDER'}
+                {/* Bottom Latin Sanctum Seal */}
+                <div className="text-[8.5px] font-cinzel tracking-[0.2em] text-[#e5c158]/90 font-bold z-10 uppercase text-center pb-0.5">
+                  {isTopCard ? 'MASTER CONCLAVE' : 'SACRED MYSTERIES'}
                 </div>
               </div>
             </motion.div>
           );
         })}
 
-        {/* Central Magical Energy Nucleus during Shuffling */}
+        {/* Central Luminous Orb during Riffle */}
         <AnimatePresence>
-          {isShuffling && (
+          {isCurrentlyShuffling && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.4 }}
-              animate={{ opacity: 1, scale: [1, 1.4, 1] }}
-              exit={{ opacity: 0, scale: 0.3 }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute z-50 flex flex-col items-center justify-center pointer-events-none -translate-y-6"
+              initial={{ opacity: 0, scale: 0.3 }}
+              animate={{ opacity: 1, scale: [0.8, 1.25, 0.9] }}
+              exit={{ opacity: 0, scale: 0.4 }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute z-50 flex items-center justify-center pointer-events-none -translate-y-8"
             >
-              <div className="w-28 h-28 rounded-full bg-gradient-to-r from-[#d4af37]/30 via-[#7f1d1d]/40 to-[#581c87]/30 blur-xl border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_60px_rgba(212,175,55,0.9)]">
-                <Sparkles className="w-14 h-14 text-[#fef08a] animate-spin drop-shadow-[0_0_15px_rgba(250,204,21,1)]" />
+              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-[#d4af37]/35 via-[#7f1d1d]/45 to-[#581c87]/35 blur-xl border border-[#d4af37]/70 flex items-center justify-center shadow-[0_0_70px_rgba(212,175,55,0.85)]">
+                <Sparkles className="w-12 h-12 text-[#fde047] animate-spin drop-shadow-[0_0_15px_rgba(250,204,21,1)]" />
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Dynamic Magical State Subtitle */}
-      <div className="my-2 text-center">
+      {/* Real-time Ritual Stage Banner */}
+      <div className="w-full max-w-md mx-auto text-center mt-3 mb-4">
         <motion.div
-          key={choreographyStep}
-          initial={{ opacity: 0, y: 5 }}
+          key={stage}
+          initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-black/80 border-2 border-[#d4af37]/60 text-[#fef08a] text-xs font-cinzel tracking-widest uppercase shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-[#0a0712]/90 border border-[#c5a059]/40 text-[#f5ede0] text-xs font-cinzel tracking-[0.15em] uppercase shadow-[0_0_25px_rgba(0,0,0,0.8)] backdrop-blur-xl"
         >
-          <Wand2 size={14} className="text-[#facc15] animate-pulse" />
+          <Wand2 size={14} className="text-[#e5c158] animate-pulse" />
           <span>
-            {choreographyStep === 'ascend'
-              ? '✦ Levitating 78 Cards into Mid-Air Sanctum...'
-              : choreographyStep === 'dance' && activeStyle === 'vortex'
-              ? '✦ Weaving the 3D Arcane Spiral Helix...'
-              : choreographyStep === 'dance' && activeStyle === 'stream'
-              ? '✦ Channelling the Triple Aerial Card Stream...'
-              : choreographyStep === 'dance' && activeStyle === 'cascade'
-              ? '✦ Riffling the Dragon-Scale Cascades...'
-              : choreographyStep === 'dance'
-              ? '✦ Spinning the 360° Sunburst Wheel...'
-              : choreographyStep === 'bridge'
-              ? '✦ Arching the 3D Magician’s Waterfall Bridge...'
-              : choreographyStep === 'converge'
-              ? '✦ Consecrating Deck Convergence...'
+            {stage === 'ascend'
+              ? '✦ Elevating the 78 Arcana into Mid-Air...'
+              : stage === 'split'
+              ? '✦ Dividing the Deck into Dual Celestial Wings...'
+              : stage === 'riffle'
+              ? '✦ Interlacing Threads of Fate in 3D Mid-Air...'
+              : stage === 'cascade'
+              ? '✦ Cascading the Magician’s Waterfall Bridge...'
+              : stage === 'consecrated'
+              ? '✦ Deck Reunited & Consecrated by Sacred Will ✦'
               : '✦ The 78-Card Rider-Waite Deck is Consecrated & Ready'}
           </span>
         </motion.div>
+
+        {/* Progress Bar during Shuffle */}
+        {isCurrentlyShuffling && (
+          <div className="w-64 h-1 bg-black/60 rounded-full mx-auto mt-3 overflow-hidden border border-[#c5a059]/25">
+            <motion.div
+              className="h-full bg-gradient-to-r from-[#c5a059] via-[#fde047] to-[#c5a059]"
+              initial={{ width: '0%' }}
+              animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Magical Shuffle Style Selectors */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-        {[
-          { id: 'vortex', label: 'Spiral Vortex', icon: Wind },
-          { id: 'stream', label: 'Triple Stream', icon: Layers },
-          { id: 'cascade', label: 'Waterfall Cascade', icon: Compass },
-          { id: 'wheel', label: '360° Wheel', icon: Sparkles }
-        ].map((style) => {
-          const IconComp = style.icon;
-          const isCurrent = activeStyle === style.id;
-          return (
-            <button
-              key={style.id}
-              type="button"
-              disabled={isShuffling}
-              onClick={() => {
-                setActiveStyle(style.id as ShuffleStyle);
-                triggerShuffle(style.id as ShuffleStyle);
-              }}
-              className={`px-3.5 py-1.5 rounded-xl border text-xs font-cinzel font-semibold tracking-wider uppercase transition flex items-center gap-1.5 ${
-                isCurrent
-                  ? 'bg-gradient-to-r from-[#7f1d1d] to-[#b45309] text-[#fef08a] border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.4)]'
-                  : 'bg-black/60 border-[#d4af37]/30 text-[#eedec5] hover:border-[#d4af37]/60 hover:text-white'
-              }`}
-            >
-              <IconComp size={13} className="text-[#facc15]" />
-              <span>{style.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Main Invoke Shuffle Button */}
-      <div className="mt-5 z-20 flex flex-col items-center">
+      {/* SINGLE BEST DIRECT INVOCATION BUTTON */}
+      <div className="z-20 flex flex-col items-center">
         <button
-          onClick={() => triggerShuffle()}
-          disabled={!canTrigger || isShuffling}
-          className="px-10 py-4 rounded-2xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] hover:from-[#991b1b] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-sm tracking-widest uppercase border-2 border-[#d4af37] shadow-[0_0_40px_rgba(212,175,55,0.5)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center gap-3 hover:scale-105 active:scale-95 group"
+          type="button"
+          onClick={handleShuffleClick}
+          disabled={!canTrigger || isCurrentlyShuffling}
+          className="px-10 py-4 sm:px-14 sm:py-4.5 rounded-2xl bg-gradient-to-r from-[#3a0614] via-[#5c1328] to-[#1e0728] hover:from-[#4d091b] hover:to-[#2c0b3b] text-[#f7eedc] font-cinzel font-bold text-xs sm:text-sm tracking-[0.2em] uppercase border border-[#c5a059]/70 shadow-[0_0_40px_rgba(197,160,89,0.35)] hover:shadow-[0_0_55px_rgba(197,160,89,0.55)] disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 flex items-center gap-3.5 hover:scale-[1.02] active:scale-[0.98] group"
         >
-          <Layers
-            size={20}
-            className={`text-[#facc15] transition-transform duration-700 ${
-              isShuffling ? 'rotate-180 animate-spin' : 'group-hover:rotate-180'
+          <Sparkles
+            size={18}
+            className={`text-[#e5c158] transition-transform duration-700 ${
+              isCurrentlyShuffling ? 'rotate-180 animate-spin text-[#fde047]' : 'group-hover:rotate-45'
             }`}
           />
-          <span>{isShuffling ? 'Weaving Sacred Arcana...' : 'Invoke Magical 3D Shuffle'}</span>
-          <Flame size={18} className="text-[#fb923c] animate-pulse" />
+          <span>{isCurrentlyShuffling ? 'Weaving Sacred Arcana...' : 'Invoke the Sacred Shuffle'}</span>
+          <Flame size={17} className="text-[#f59e0b] animate-pulse" />
         </button>
 
-        <span className="text-xs text-[#e2d5b8]/75 font-serif italic mt-2.5 text-center">
-          {isShuffling
-            ? 'Watch the cards levitate, divide into the celestial vortex, and interlock in 3D space'
-            : 'Click to witness the cards levitate and shuffle in authentic 3D magical choreography'}
+        <span className="text-[11px] text-[#baa890] font-serif italic mt-3 text-center tracking-wide">
+          {isCurrentlyShuffling
+            ? 'The sacred cards levitate, divide into dual wings, and weave into unified synchronicity'
+            : 'Click to physically levitate, riffle, and waterfall-cascade the 78 cards in 3D mid-air'}
         </span>
       </div>
     </div>

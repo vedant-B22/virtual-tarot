@@ -92,6 +92,12 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
 
     s.on('shuffle_started', () => {
       audioEngine.playShuffle();
+      setSession((prev) => (prev ? { ...prev, isShuffling: true } : prev));
+    });
+
+    s.on('shuffle_ended', ({ deck }: { deck?: any[] } = {}) => {
+      audioEngine.playChime(587);
+      setSession((prev) => (prev ? { ...prev, isShuffling: false, ...(deck ? { deck } : {}) } : prev));
     });
 
     s.on('card_selected', () => {
@@ -207,6 +213,8 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
   };
 
   const handleTriggerShuffle = () => {
+    setSession((prev) => (prev ? { ...prev, isShuffling: true } : prev));
+    audioEngine.playShuffle();
     socket?.emit('trigger_shuffle');
   };
 
@@ -637,22 +645,22 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
         {/* ================= STEP 2: SHUFFLE ================= */}
         {currentStep === 2 && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto py-4 relative"
           >
             {/* Theatrical Subtitle Header */}
             <div className="mb-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/70 border border-[#d4af37]/50 text-[#fef08a] text-xs font-cinzel uppercase tracking-widest mb-2 shadow-inner">
-                <Sparkles size={13} className="text-[#facc15] animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-black/60 border border-[#c5a059]/30 text-[#e5c158] text-[11px] font-cinzel uppercase tracking-[0.2em] mb-2 shadow-inner">
+                <Sparkles size={12} className="text-[#e5c158] animate-pulse" />
                 <span>Act II • The Sacred Weave & 3D Aerial Shuffle</span>
-                <Sparkles size={13} className="text-[#facc15] animate-pulse" />
+                <Sparkles size={12} className="text-[#e5c158] animate-pulse" />
               </div>
-              <h2 className="text-3xl sm:text-5xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37] mt-1 drop-shadow-[0_2px_15px_rgba(212,175,55,0.6)]">
+              <h2 className="text-2xl sm:text-4xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#f7eedc] via-[#e5c158] to-[#c5a059] mt-1 drop-shadow-[0_2px_12px_rgba(197,160,89,0.35)]">
                 Infuse the 78 Arcana with Sacred Will
               </h2>
-              <p className="text-xs sm:text-sm text-[#e2d5b8]/90 mt-2 max-w-xl mx-auto font-serif leading-relaxed">
-                As above, so below. The 78 Rider-Waite cards physically levitate, separate into the celestial vortex, and interleave in real-time across both your screen and the Reader&apos;s altar.
+              <p className="text-xs sm:text-sm text-[#baa890] mt-2 max-w-xl mx-auto font-serif leading-relaxed">
+                As above, so below. Watch the consecrated deck levitate into mid-air, separate into dual celestial wings, and riffle-cascade in real-time between your chamber and the Reader&apos;s altar.
               </p>
             </div>
 
@@ -667,10 +675,10 @@ export const LiveSession: React.FC<LiveSessionProps> = ({
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => handleAdvanceStep(3)}
-                className="px-10 py-4 rounded-2xl bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] hover:from-[#991b1b] hover:to-[#d97706] text-[#fef3c7] font-cinzel font-bold text-xs uppercase tracking-widest border-2 border-[#d4af37]/80 shadow-[0_0_30px_rgba(212,175,55,0.45)] transition flex items-center justify-center gap-2.5 hover:scale-105"
+                className="px-10 py-3.5 rounded-2xl bg-gradient-to-r from-[#2f0714] via-[#4d1024] to-[#1c0827] hover:from-[#3f0a1b] hover:to-[#2b0c3c] text-[#f7eedc] font-cinzel font-bold text-xs uppercase tracking-[0.2em] border border-[#c5a059]/70 shadow-[0_0_25px_rgba(197,160,89,0.35)] transition flex items-center justify-center gap-2.5 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>Spread the 78 Cards Across Altar</span>
-                <ArrowRight size={18} />
+                <ArrowRight size={17} />
               </button>
             </div>
           </motion.div>

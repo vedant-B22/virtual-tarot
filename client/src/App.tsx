@@ -85,8 +85,8 @@ export function App() {
         <div className="absolute top-[50%] left-[45%] w-1 h-1 rounded-full bg-amber-200/80 blur-[0.5px] animate-ember" style={{ animationDelay: '4.5s' }} />
       </div>
 
-      {/* Main Gothic Top Header */}
-      <header className="relative z-20 border-b-2 border-[#d4af37]/40 bg-[#090312]/95 backdrop-blur-md px-4 sm:px-8 py-4 shadow-[0_4px_35px_rgba(0,0,0,0.85)]">
+      {/* Main Consecrated Top Header */}
+      <header className="relative z-20 border-b border-[#c5a059]/25 bg-[#08040f]/95 backdrop-blur-2xl px-4 sm:px-8 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Logo & Brand Identity */}
           <div
@@ -97,46 +97,46 @@ export function App() {
             className="flex items-center gap-3.5 cursor-pointer group"
           >
             {/* Wax Seal / Mystic Crest */}
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#7f1d1d] via-[#4c0519] to-[#120208] border-2 border-[#d4af37] flex items-center justify-center shadow-[0_0_25px_rgba(212,175,55,0.45)] group-hover:scale-105 group-hover:shadow-[0_0_35px_rgba(212,175,55,0.7)] transition-all duration-300">
-              <span className="text-xl text-[#f3e5ab] drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]">🜂</span>
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#2a0614] via-[#1a0724] to-[#07020d] border border-[#c5a059]/80 flex items-center justify-center shadow-[0_0_20px_rgba(197,160,89,0.3)] group-hover:scale-105 group-hover:shadow-[0_0_30px_rgba(197,160,89,0.5)] transition-all duration-300">
+              <span className="text-xl text-[#f7eedc] drop-shadow-[0_0_8px_rgba(250,204,21,0.7)]">🜂</span>
             </div>
             <div>
-              <div className="font-gothic-title font-bold text-2xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#fef08a] via-[#f3e5ab] to-[#d4af37] drop-shadow-[0_2px_10px_rgba(212,175,55,0.5)]">
+              <div className="font-gothic-title font-bold text-2xl tracking-[0.1em] text-transparent bg-clip-text bg-gradient-to-r from-[#f7eedc] via-[#e5c158] to-[#c5a059] drop-shadow-[0_2px_10px_rgba(197,160,89,0.35)]">
                 LIVE TAROT
               </div>
-              <div className="text-[11px] tracking-widest text-[#d4af37]/90 uppercase font-cinzel font-medium">
+              <div className="text-[10.5px] tracking-[0.25em] text-[#baa890] uppercase font-cinzel font-medium">
                 The Mystic Arcana Sanctuary
               </div>
             </div>
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/70 border border-[#d4af37]/40 shadow-inner">
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#090510]/80 border border-[#c5a059]/20 shadow-inner">
             <button
               onClick={() => {
                 setActiveView('booking');
                 window.history.pushState({}, '', '/');
               }}
-              className={`px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+              className={`px-5 py-2 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeView === 'booking'
-                  ? 'bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] text-[#fef08a] border border-[#d4af37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
-                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-black/50'
+                  ? 'bg-gradient-to-r from-[#2f0714] via-[#4d1024] to-[#1c0827] text-[#f7eedc] border border-[#c5a059]/60 shadow-[0_0_15px_rgba(197,160,89,0.3)]'
+                  : 'text-[#baa890] hover:text-[#f7eedc] hover:bg-black/40'
               }`}
             >
-              <Calendar size={14} />
+              <Calendar size={13} />
               <span>Book Sacred Reading</span>
             </button>
 
             <button
               onClick={() => setActiveView('admin')}
-              className={`px-5 py-2.5 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+              className={`px-5 py-2 rounded-xl font-cinzel font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeView === 'admin'
-                  ? 'bg-gradient-to-r from-[#7f1d1d] via-[#581c87] to-[#b45309] text-[#fef08a] border border-[#d4af37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)]'
-                  : 'text-[#e2d5b8] hover:text-[#fef08a] hover:bg-black/50'
+                  ? 'bg-gradient-to-r from-[#2f0714] via-[#4d1024] to-[#1c0827] text-[#f7eedc] border border-[#c5a059]/60 shadow-[0_0_15px_rgba(197,160,89,0.3)]'
+                  : 'text-[#baa890] hover:text-[#f7eedc] hover:bg-black/40'
               }`}
             >
-              <Shield size={14} />
-              <span>Reader Sanctuary</span>
+              <Shield size={13} />
+              <span>Reader Sanctum</span>
             </button>
           </div>
         </div>
