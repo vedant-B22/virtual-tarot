@@ -24,7 +24,7 @@ export const FoundersBanner: React.FC = () => {
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-gothic-title font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#f7eedc] via-[#e5c158] to-[#c5a059] drop-shadow-[0_2px_12px_rgba(197,160,89,0.35)] tracking-wide">
-            House of Baviskar & Panchal
+            The Arcane Diaries
           </h2>
 
           <p className="text-xs sm:text-sm text-[#baa890] font-serif italic max-w-xl mx-auto mt-2 leading-relaxed">
